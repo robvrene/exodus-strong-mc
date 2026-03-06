@@ -1,0 +1,42 @@
+{
+  "name": "AIM Content Calendar",
+  "version": "1.0",
+  "created": "2026-02-16",
+  "source": "Maria Wendt Strategy + Aaron's Posting Schedule",
+  "timezone": "America/New_York",
+  
+  "dailySchedule": [
+    { "time": "07:00", "type": "email", "platform": "email", "label": "Daily Newsletter", "frequency": "daily" },
+    { "time": "10:00", "type": "reel", "platform": "instagram", "label": "Reel #1", "frequency": "daily" },
+    { "time": "11:00", "type": "story", "platform": "instagram", "label": "Daily Story", "frequency": "daily" },
+    { "time": "15:00", "type": "carousel", "platform": "instagram", "label": "Daily Carousel", "frequency": "daily" },
+    { "time": "16:00", "type": "email", "platform": "email", "label": "Promo Email", "frequency": "every_other_day" },
+    { "time": "18:00", "type": "reel", "platform": "instagram", "label": "Reel #2", "frequency": "daily" },
+    { "time": "20:00", "type": "reel", "platform": "instagram", "label": "Reel #3", "frequency": "daily" }
+  ],
+  
+  "weeklySchedule": [
+    { "day": "sunday", "time": "09:00", "type": "video", "platform": "youtube", "label": "CTW YouTube Video" },
+    { "day": "monday", "time": "13:00", "type": "video", "platform": "youtube", "label": "Media Mogul Episode" },
+    { "day": "friday", "time": "14:00", "type": "live", "platform": "facebook", "label": "FB Live #1" },
+    { "day": "saturday", "time": "13:00", "type": "live", "platform": "facebook", "label": "FB Live #2" },
+    { "day": "sunday", "time": "19:00", "type": "live", "platform": "facebook", "label": "FB Live #3" },
+    { "day": "monday", "time": "17:00", "type": "live", "platform": "facebook", "label": "FB Live #4" },
+    { "day": "tuesday", "time": "12:00", "type": "live", "platform": "facebook", "label": "FB Live #5" }
+  ],
+  
+  "contentTypes": {
+    "reel": { "platforms": ["instagram", "tiktok", "youtube_shorts"], "maxLength": 90 },
+    "carousel": { "platforms": ["instagram", "linkedin"], "maxSlides": 10 },
+    "story": { "platforms": ["instagram", "facebook"], "maxLength": 15 },
+    "video": { "platforms": ["youtube", "facebook"], "minLength": 300 },
+    "live": { "platforms": ["facebook", "instagram", "youtube"], "requiresManual": true },
+    "email": { "platforms": ["email"], "tool": "ghl" }
+  },
+  
+  "postingTools": {
+    "primary": "pending_decision",
+    "options": ["buffer", "publer", "direct_api", "manual"],
+    "note": "Awaiting Aaron's decision on Buffer vs Direct API approach"
+  }
+}
