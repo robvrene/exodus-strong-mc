@@ -2,259 +2,94 @@
 
 import { useState, useEffect } from "react";
 
-interface DemoState {
-  businessName: string;
-  phase: string;
-  revenuePlannerData: any | null;
-}
+// Static mock data - already populated
+const mockAgents = [
+  { id: "prospector", name: "Prospect Hunter", avatar: "🎯", role: "Finding ideal prospects", status: "complete", currentTask: "Found 112 prospects", progress: 100, tasksCompleted: 3 },
+  { id: "researcher", name: "Deep Researcher", avatar: "🔍", role: "Researching prospects", status: "working", currentTask: "Analyzing prospect #47...", progress: 65, tasksCompleted: 2 },
+  { id: "writer", name: "Message Writer", avatar: "✍️", role: "Crafting personalized DMs", status: "working", currentTask: "Writing message for John S.", progress: 40, tasksCompleted: 1 },
+  { id: "sender", name: "Outreach Agent", avatar: "📧", role: "Sending messages", status: "active", currentTask: "30 DMs sent today", progress: 30, tasksCompleted: 1 },
+];
 
-const STORAGE_KEY = "aim-demo-state";
+const mockTasks = [
+  { id: "1", title: "Scrape LinkedIn for SaaS founders", status: "complete", priority: "high" },
+  { id: "2", title: "Research company backgrounds", status: "in-progress", priority: "high" },
+  { id: "3", title: "Generate personalized openers", status: "in-progress", priority: "medium" },
+  { id: "4", title: "Send batch 1 (50 DMs)", status: "in-progress", priority: "high" },
+  { id: "5", title: "Follow up on replies", status: "todo", priority: "medium" },
+  { id: "6", title: "Book discovery calls", status: "todo", priority: "high" },
+];
+
+const mockActivity = [
+  { id: "1", message: "📞 Call booked with Sarah M. - Tomorrow 2pm", timestamp: new Date(Date.now() - 60000).toISOString(), type: "success" },
+  { id: "2", message: "💬 New reply from Mike T.: 'Interested, let's chat'", timestamp: new Date(Date.now() - 180000).toISOString(), type: "success" },
+  { id: "3", message: "📧 30 DMs sent - waiting for responses", timestamp: new Date(Date.now() - 300000).toISOString(), type: "info" },
+  { id: "4", message: "✍️ Message Writer crafting personalized openers", timestamp: new Date(Date.now() - 420000).toISOString(), type: "agent" },
+  { id: "5", message: "💬 Reply from Jennifer K.: 'Tell me more'", timestamp: new Date(Date.now() - 600000).toISOString(), type: "success" },
+  { id: "6", message: "🔍 Deep Researcher analyzing 112 prospect profiles", timestamp: new Date(Date.now() - 900000).toISOString(), type: "agent" },
+  { id: "7", message: "✅ Prospecting complete: 112 ideal prospects found", timestamp: new Date(Date.now() - 1200000).toISOString(), type: "success" },
+  { id: "8", message: "🎯 Prospect Hunter scanning LinkedIn...", timestamp: new Date(Date.now() - 1500000).toISOString(), type: "agent" },
+];
+
+const mockMetrics = {
+  prospects: 112,
+  dmsSent: 30,
+  replies: 3,
+  calls: 1,
+};
+
+const statusColors: Record<string, { bg: string; text: string }> = {
+  idle: { bg: "rgba(100,116,139,0.2)", text: "#94A3B8" },
+  active: { bg: "rgba(16,185,129,0.2)", text: "#10B981" },
+  working: { bg: "rgba(124,58,237,0.2)", text: "#A78BFA" },
+  complete: { bg: "rgba(16,185,129,0.2)", text: "#10B981" },
+  blocked: { bg: "rgba(239,68,68,0.2)", text: "#EF4444" },
+};
+
+const activityColors: Record<string, string> = {
+  info: "#2F80FF",
+  success: "#10B981",
+  warning: "#F59E0B",
+  agent: "#7B61FF",
+  metric: "#FF4EDB",
+};
 
 export default function LiveDemo() {
-  const [state, setState] = useState<DemoState | null>(null);
-  const [waveStatus, setWaveStatus] = useState({
-    wave1: { status: "pending", progress: 0 },
-    wave2: { status: "pending", progress: 0 },
-    wave3: { status: "pending", progress: 0 },
-  });
-  const [agents, setAgents] = useState<any[]>([]);
-  const [activity, setActivity] = useState<any[]>([]);
+  const [agents, setAgents] = useState(mockAgents);
+  const [activity, setActivity] = useState(mockActivity);
+  const [metrics, setMetrics] = useState(mockMetrics);
 
-  // Load state from localStorage
+  // Simulate live updates
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setState(parsed);
-        
-        // If building phase, start simulating the waves
-        if (parsed.phase === "building" && parsed.revenuePlannerData) {
-          startWaveSimulation(parsed.revenuePlannerData);
+    const interval = setInterval(() => {
+      // Randomly update agent progress
+      setAgents(prev => prev.map(agent => {
+        if (agent.status === "working") {
+          const newProgress = Math.min(100, agent.progress + Math.random() * 5);
+          return { ...agent, progress: newProgress };
         }
-      } catch (e) {
-        console.error("Failed to load state:", e);
+        return agent;
+      }));
+
+      // Occasionally add new activity
+      if (Math.random() > 0.7) {
+        const messages = [
+          "🔍 Analyzing prospect profile...",
+          "✍️ Generating personalized message...",
+          "📧 Message queued for sending...",
+          "🎯 New prospect identified...",
+        ];
+        const newActivity = {
+          id: `activity-${Date.now()}`,
+          message: messages[Math.floor(Math.random() * messages.length)],
+          timestamp: new Date().toISOString(),
+          type: "info",
+        };
+        setActivity(prev => [newActivity, ...prev.slice(0, 19)]);
       }
-    }
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
-
-  const startWaveSimulation = (plannerData: any) => {
-    // Spawn Wave 1 agents
-    const wave1Agents = [
-      { id: "website", name: "Website Bot", avatar: "🌐", role: "Building landing page", status: "working", progress: 0, wave: 1 },
-    ];
-    
-    if (plannerData.profit?.cart === "now") {
-      wave1Agents.push({ id: "cart", name: "Cart Page Bot", avatar: "🛒", role: "Building sales page", status: "idle", progress: 0, wave: 1 });
-    }
-    if (plannerData.profit?.call === "now") {
-      wave1Agents.push({ id: "call", name: "Call Funnel Bot", avatar: "📞", role: "Building application funnel", status: "idle", progress: 0, wave: 1 });
-    }
-    
-    setAgents(wave1Agents);
-    
-    addActivity("🚀 Wave 1 starting — Foundation phase", "signal", "[MASTER: WAVE 1 SPAWNING]");
-    addActivity(`🤖 Spawning ${wave1Agents.length} agents for Wave 1`, "success");
-    
-    setWaveStatus(prev => ({
-      ...prev,
-      wave1: { status: "running", progress: 0 },
-    }));
-
-    // Simulate progress
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 5 + 2;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        
-        // Complete Wave 1
-        setWaveStatus(prev => ({
-          ...prev,
-          wave1: { status: "complete", progress: 100 },
-        }));
-        addActivity("✅ Wave 1 Complete — Foundation built!", "signal", "[MASTER: WAVE 1 COMPLETE]");
-        
-        // Start Wave 2
-        setTimeout(() => startWave2(plannerData), 1000);
-      }
-      
-      setWaveStatus(prev => ({
-        ...prev,
-        wave1: { ...prev.wave1, progress: Math.min(progress, 100) },
-      }));
-      
-      // Update agent progress
-      setAgents(prev => prev.map(a => ({
-        ...a,
-        status: progress < 30 ? "working" : progress < 70 ? "working" : progress < 100 ? "working" : "complete",
-        progress: Math.min(progress, 100),
-      })));
-    }, 500);
-  };
-
-  const startWave2 = (plannerData: any) => {
-    const wave2Agents = [
-      { id: "email", name: "Email Sequence Bot", avatar: "📧", role: "Writing email sequences", status: "working", progress: 0, wave: 2 },
-    ];
-    
-    if (plannerData.promote?.prospect === "now") {
-      wave2Agents.push({ id: "outbound", name: "Outbound Bot", avatar: "📤", role: "Setting up cold outreach", status: "idle", progress: 0, wave: 2 });
-    }
-    
-    setAgents(prev => [...prev.map(a => ({ ...a, status: "complete" })), ...wave2Agents]);
-    addActivity("🚀 Wave 2 starting — Sequences phase", "signal", "[MASTER: WAVE 2 SPAWNING]");
-    
-    setWaveStatus(prev => ({
-      ...prev,
-      wave2: { status: "running", progress: 0 },
-    }));
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 5 + 2;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        
-        setWaveStatus(prev => ({
-          ...prev,
-          wave2: { status: "complete", progress: 100 },
-        }));
-        addActivity("✅ Wave 2 Complete — Sequences ready!", "signal", "[MASTER: WAVE 2 COMPLETE]");
-        
-        // Check if Wave 3 needed
-        if (plannerData.promote?.publish === "now" || plannerData.promote?.paid === "now") {
-          setTimeout(() => startWave3(plannerData), 1000);
-        } else {
-          setTimeout(() => completeDemo(), 1000);
-        }
-      }
-      
-      setWaveStatus(prev => ({
-        ...prev,
-        wave2: { ...prev.wave2, progress: Math.min(progress, 100) },
-      }));
-    }, 500);
-  };
-
-  const startWave3 = (plannerData: any) => {
-    const wave3Agents: any[] = [];
-    
-    if (plannerData.promote?.publish === "now") {
-      wave3Agents.push({ id: "content", name: "Content Bot", avatar: "📱", role: "Creating content plan", status: "working", progress: 0, wave: 3 });
-    }
-    if (plannerData.promote?.paid === "now") {
-      wave3Agents.push({ id: "ads", name: "Ads Bot", avatar: "📺", role: "Building ad creative", status: "working", progress: 0, wave: 3 });
-    }
-    
-    setAgents(prev => [...prev.map(a => ({ ...a, status: a.wave < 3 ? "complete" : a.status })), ...wave3Agents]);
-    addActivity("🚀 Wave 3 starting — Content & Ads phase", "signal", "[MASTER: WAVE 3 SPAWNING]");
-    
-    setWaveStatus(prev => ({
-      ...prev,
-      wave3: { status: "running", progress: 0 },
-    }));
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 5 + 2;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        
-        setWaveStatus(prev => ({
-          ...prev,
-          wave3: { status: "complete", progress: 100 },
-        }));
-        addActivity("✅ Wave 3 Complete — Content & Ads ready!", "signal", "[MASTER: WAVE 3 COMPLETE]");
-        
-        setTimeout(() => completeDemo(), 1000);
-      }
-      
-      setWaveStatus(prev => ({
-        ...prev,
-        wave3: { ...prev.wave3, progress: Math.min(progress, 100) },
-      }));
-    }, 500);
-  };
-
-  const completeDemo = () => {
-    addActivity("🎉 ALL BOTS COMPLETE — Your AI Workforce is ready!", "signal", "[MASTER: ALL BOTS COMPLETE]");
-    setAgents(prev => prev.map(a => ({ ...a, status: "complete", progress: 100 })));
-    
-    // Update localStorage phase
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      parsed.phase = "complete";
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-    }
-  };
-
-  const addActivity = (message: string, type: string, signal?: string) => {
-    setActivity(prev => [{
-      id: `activity-${Date.now()}`,
-      message,
-      type,
-      signal,
-      timestamp: new Date().toISOString(),
-    }, ...prev].slice(0, 50));
-  };
-
-  if (!state) {
-    return (
-      <div style={{
-        minHeight: "100vh",
-        background: "#0B0F19",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#8A8F98",
-      }}>
-        Loading demo state...
-      </div>
-    );
-  }
-
-  if (state.phase !== "building" && state.phase !== "complete") {
-    return (
-      <div style={{
-        minHeight: "100vh",
-        background: "#0B0F19",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        padding: 40,
-      }}>
-        <div>
-          <div style={{ fontSize: 48, marginBottom: 20 }}>⏳</div>
-          <h2 style={{ color: "#F5F7FA", fontSize: 24, marginBottom: 10 }}>
-            Waiting to Build
-          </h2>
-          <p style={{ color: "#8A8F98", fontSize: 14, maxWidth: 400 }}>
-            Complete the Vision Intake conversation, then lock your Revenue Planner to start building your AI workforce.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  const waveStatusColors = {
-    pending: { bg: "rgba(100,116,139,0.1)", text: "#6B7186", border: "#374151" },
-    running: { bg: "rgba(255,78,219,0.1)", text: "#FF4EDB", border: "#FF4EDB" },
-    complete: { bg: "rgba(16,185,129,0.1)", text: "#10B981", border: "#10B981" },
-  };
-
-  const activityColors = {
-    info: "#2F80FF",
-    success: "#10B981",
-    warning: "#F59E0B",
-    signal: "#FF4EDB",
-    gate: "#7B61FF",
-  };
 
   return (
     <div style={{
@@ -281,15 +116,16 @@ export default function LiveDemo() {
             fontFamily: "'Orbitron', monospace",
             marginBottom: 4,
           }}>
-            🔴 LIVE BUILD
+            🔴 LIVE DEMO
           </div>
           <h1 style={{
             fontSize: 24,
             fontWeight: 700,
             color: "#F5F7FA",
             margin: 0,
+            fontFamily: "'Space Grotesk', sans-serif",
           }}>
-            {state.businessName}
+            Viral Growth Agency
           </h1>
         </div>
         <div style={{
@@ -308,77 +144,27 @@ export default function LiveDemo() {
         </div>
       </div>
 
-      {/* Wave Status Bar */}
+      {/* Metrics Bar */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
+        gridTemplateColumns: "repeat(4, 1fr)",
         gap: 16,
         marginBottom: 24,
       }}>
-        {(["wave1", "wave2", "wave3"] as const).map((waveKey, idx) => {
-          const wave = waveStatus[waveKey];
-          const style = waveStatusColors[wave.status as keyof typeof waveStatusColors];
-          return (
-            <div
-              key={waveKey}
-              style={{
-                padding: 16,
-                background: style.bg,
-                borderRadius: 12,
-                border: `2px solid ${style.border}`,
-              }}
-            >
-              <div style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}>
-                <div>
-                  <div style={{ fontSize: 11, color: "#6B7186", textTransform: "uppercase", letterSpacing: 1 }}>
-                    Wave {idx + 1}
-                  </div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: style.text, marginTop: 4 }}>
-                    {wave.status.toUpperCase()}
-                  </div>
-                </div>
-                <span style={{ fontSize: 28 }}>
-                  {wave.status === "pending" ? "⏳" : wave.status === "running" ? "⚡" : "✅"}
-                </span>
-              </div>
-              {wave.status === "running" && (
-                <div style={{
-                  marginTop: 12,
-                  height: 4,
-                  background: "rgba(255,255,255,0.1)",
-                  borderRadius: 2,
-                  overflow: "hidden",
-                }}>
-                  <div style={{
-                    width: `${wave.progress}%`,
-                    height: "100%",
-                    background: style.text,
-                    transition: "width 0.3s ease",
-                  }} />
-                </div>
-              )}
-              <div style={{ fontSize: 11, color: "#6B7186", marginTop: 8 }}>
-                {idx === 0 && "Foundation (Website + Funnels)"}
-                {idx === 1 && "Sequences (Email + Outreach)"}
-                {idx === 2 && "Content & Ads"}
-              </div>
-            </div>
-          );
-        })}
+        <MetricCard label="Prospects Found" value={metrics.prospects} icon="🎯" color="#2F80FF" />
+        <MetricCard label="DMs Sent" value={metrics.dmsSent} icon="📧" color="#7B61FF" />
+        <MetricCard label="Replies" value={metrics.replies} icon="💬" color="#10B981" />
+        <MetricCard label="Calls Booked" value={metrics.calls} icon="📞" color="#FF4EDB" />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24 }}>
         {/* Left Column - Activity Feed */}
         <div style={{
           background: "linear-gradient(180deg, #111624 0%, #0D1117 100%)",
           borderRadius: 12,
           border: "1px solid rgba(255,255,255,0.08)",
           padding: 20,
-          maxHeight: "calc(100vh - 340px)",
+          maxHeight: "calc(100vh - 280px)",
           overflow: "auto",
         }}>
           <h2 style={{
@@ -390,53 +176,41 @@ export default function LiveDemo() {
             alignItems: "center",
             gap: 8,
           }}>
-            <span>📡</span> Signal Log
+            <span>📡</span> Live Activity
           </h2>
           
-          {activity.length === 0 ? (
-            <div style={{
-              color: "#6B7186",
-              fontSize: 13,
-              textAlign: "center",
-              padding: 40,
-            }}>
-              Waiting for signals...
-            </div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {activity.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    padding: 12,
-                    background: "rgba(255,255,255,0.03)",
-                    borderRadius: 8,
-                    borderLeft: `3px solid ${activityColors[item.type as keyof typeof activityColors] || "#6B7186"}`,
-                  }}
-                >
-                  <p style={{ color: "#F5F7FA", fontSize: 13, margin: 0, lineHeight: 1.4 }}>
-                    {item.message}
-                  </p>
-                  {item.signal && (
-                    <p style={{
-                      color: "#FF4EDB",
-                      fontSize: 10,
-                      margin: "6px 0 0",
-                      fontFamily: "'Orbitron', monospace",
-                    }}>
-                      {item.signal}
-                    </p>
-                  )}
-                  <p style={{ color: "#6B7186", fontSize: 10, margin: "4px 0 0" }}>
-                    {new Date(item.timestamp).toLocaleTimeString()}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {activity.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  padding: 12,
+                  background: "rgba(255,255,255,0.03)",
+                  borderRadius: 8,
+                  borderLeft: `3px solid ${activityColors[item.type] || "#6B7186"}`,
+                }}
+              >
+                <p style={{
+                  color: "#F5F7FA",
+                  fontSize: 13,
+                  margin: 0,
+                  lineHeight: 1.4,
+                }}>
+                  {item.message}
+                </p>
+                <p style={{
+                  color: "#6B7186",
+                  fontSize: 10,
+                  margin: "4px 0 0",
+                }}>
+                  {new Date(item.timestamp).toLocaleTimeString()}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Right Column - AI Agents */}
+        {/* Middle Column - AI Agents */}
         <div style={{
           background: "linear-gradient(180deg, #111624 0%, #0D1117 100%)",
           borderRadius: 12,
@@ -452,86 +226,138 @@ export default function LiveDemo() {
             alignItems: "center",
             gap: 8,
           }}>
-            <span>🤖</span> Active Bots ({agents.length})
+            <span>🤖</span> AI Workforce ({agents.length})
           </h2>
           
-          {agents.length === 0 ? (
-            <div style={{
-              color: "#6B7186",
-              fontSize: 13,
-              textAlign: "center",
-              padding: 40,
-            }}>
-              Bots spawning...
-            </div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {agents.map((agent) => {
-                const statusColors = {
-                  idle: { bg: "rgba(100,116,139,0.2)", text: "#94A3B8" },
-                  working: { bg: "rgba(124,58,237,0.2)", text: "#A78BFA" },
-                  complete: { bg: "rgba(16,185,129,0.2)", text: "#10B981" },
-                };
-                const statusStyle = statusColors[agent.status as keyof typeof statusColors] || statusColors.idle;
-                
-                return (
-                  <div
-                    key={agent.id}
-                    style={{
-                      padding: 14,
-                      background: "rgba(255,255,255,0.03)",
-                      borderRadius: 8,
-                      border: `1px solid ${statusStyle.text}30`,
-                    }}
-                  >
-                    <div style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 10,
-                      marginBottom: 8,
-                    }}>
-                      <span style={{ fontSize: 24 }}>{agent.avatar}</span>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: "#F5F7FA" }}>
-                          {agent.name}
-                        </div>
-                        <div style={{ fontSize: 11, color: "#8A8F98" }}>
-                          {agent.role} • Wave {agent.wave}
-                        </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {agents.map((agent) => {
+              const statusStyle = statusColors[agent.status] || statusColors.idle;
+              return (
+                <div
+                  key={agent.id}
+                  style={{
+                    padding: 14,
+                    background: "rgba(255,255,255,0.03)",
+                    borderRadius: 8,
+                    border: `1px solid ${statusStyle.text}30`,
+                  }}
+                >
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    marginBottom: 8,
+                  }}>
+                    <span style={{ fontSize: 24 }}>{agent.avatar}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontSize: 14,
+                        fontWeight: 600,
+                        color: "#F5F7FA",
+                      }}>
+                        {agent.name}
                       </div>
                       <div style={{
-                        padding: "3px 8px",
-                        borderRadius: 4,
-                        background: statusStyle.bg,
-                        color: statusStyle.text,
-                        fontSize: 9,
-                        fontWeight: 600,
-                        textTransform: "uppercase",
+                        fontSize: 11,
+                        color: "#8A8F98",
                       }}>
-                        {agent.status}
+                        {agent.role}
                       </div>
                     </div>
-                    
-                    {agent.status === "working" && (
-                      <div style={{
-                        height: 4,
-                        background: "rgba(255,255,255,0.1)",
-                        borderRadius: 2,
-                        overflow: "hidden",
-                      }}>
-                        <div style={{
-                          width: `${agent.progress}%`,
-                          height: "100%",
-                          background: statusStyle.text,
-                          transition: "width 0.3s ease",
-                        }} />
-                      </div>
-                    )}
+                    <div style={{
+                      padding: "3px 8px",
+                      borderRadius: 4,
+                      background: statusStyle.bg,
+                      color: statusStyle.text,
+                      fontSize: 9,
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                    }}>
+                      {agent.status}
+                    </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
+                  
+                  {agent.currentTask && (
+                    <div style={{
+                      fontSize: 12,
+                      color: "#8A8F98",
+                      marginBottom: 8,
+                    }}>
+                      {agent.currentTask}
+                    </div>
+                  )}
+                  
+                  {(agent.status === "working" || agent.status === "active") && (
+                    <div style={{
+                      height: 4,
+                      background: "rgba(255,255,255,0.1)",
+                      borderRadius: 2,
+                      overflow: "hidden",
+                    }}>
+                      <div style={{
+                        width: `${agent.progress}%`,
+                        height: "100%",
+                        background: statusStyle.text,
+                        transition: "width 0.5s ease",
+                      }} />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right Column - Tasks */}
+        <div style={{
+          background: "linear-gradient(180deg, #111624 0%, #0D1117 100%)",
+          borderRadius: 12,
+          border: "1px solid rgba(255,255,255,0.08)",
+          padding: 20,
+        }}>
+          <h2 style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: "#F5F7FA",
+            marginBottom: 16,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}>
+            <span>📋</span> Tasks ({mockTasks.length})
+          </h2>
+          
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {mockTasks.map((task) => (
+              <div
+                key={task.id}
+                style={{
+                  padding: 10,
+                  background: "rgba(255,255,255,0.03)",
+                  borderRadius: 6,
+                  borderLeft: `3px solid ${
+                    task.status === "complete" ? "#10B981" :
+                    task.status === "in-progress" ? "#2F80FF" : "#6B7186"
+                  }`,
+                }}
+              >
+                <div style={{
+                  fontSize: 12,
+                  color: "#F5F7FA",
+                  marginBottom: 4,
+                }}>
+                  {task.title}
+                </div>
+                <div style={{
+                  fontSize: 10,
+                  color: "#6B7186",
+                  textTransform: "uppercase",
+                }}>
+                  {task.status}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -541,6 +367,39 @@ export default function LiveDemo() {
           50% { opacity: 0.5; }
         }
       `}</style>
+    </div>
+  );
+}
+
+function MetricCard({ label, value, icon, color }: { label: string; value: number; icon: string; color: string }) {
+  return (
+    <div style={{
+      padding: 20,
+      background: "linear-gradient(180deg, #111624 0%, #0D1117 100%)",
+      borderRadius: 12,
+      border: `1px solid ${color}30`,
+    }}>
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}>
+        <div>
+          <div style={{ fontSize: 11, color: "#6B7186", textTransform: "uppercase", letterSpacing: 1 }}>
+            {label}
+          </div>
+          <div style={{
+            fontSize: 32,
+            fontWeight: 700,
+            color: color,
+            fontFamily: "'Orbitron', monospace",
+            marginTop: 4,
+          }}>
+            {value}
+          </div>
+        </div>
+        <span style={{ fontSize: 32 }}>{icon}</span>
+      </div>
     </div>
   );
 }
