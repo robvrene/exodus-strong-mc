@@ -63,6 +63,7 @@ async function checkOpenClaw(): Promise<HealthCheck> {
 
 async function checkGHL(): Promise<HealthCheck> {
   const key = process.env.GHL_API_KEY || process.env.GHL_TOKEN;
+  const locationId = process.env.GHL_LOCATION_ID;
   if (!key) {
     return {
       service: "GoHighLevel",
@@ -73,8 +74,15 @@ async function checkGHL(): Promise<HealthCheck> {
   }
   const start = Date.now();
   try {
-    const resp = await fetch("https://rest.gohighlevel.com/v1/contacts/?limit=1", {
-      headers: { Authorization: `Bearer ${key}` },
+    // Use GHL V2 API (pit- tokens are V2 only)
+    const url = locationId
+      ? `https://services.leadconnectorhq.com/contacts/?locationId=${locationId}&limit=1`
+      : "https://services.leadconnectorhq.com/locations/search?limit=1";
+    const resp = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${key}`,
+        Version: "2021-07-28",
+      },
     });
     return {
       service: "GoHighLevel",
