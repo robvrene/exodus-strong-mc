@@ -18,10 +18,11 @@ function getClient(): Client {
     _client = createClient({ url, authToken: authToken || undefined });
     console.log("[DB] Connected to Turso:", url);
   } else {
-    // Fallback: local file-based SQLite via libsql
-    _client = createClient({ url: "file:data/mission-control.db" });
+    // Fallback: in-memory SQLite (works on Vercel's read-only filesystem)
+    // Data resets per cold start — configure TURSO_DATABASE_URL for persistence
+    _client = createClient({ url: ":memory:" });
     console.warn(
-      "[DB] No DATABASE_URL — using local SQLite at data/mission-control.db"
+      "[DB] No DATABASE_URL — using in-memory SQLite (data will not persist across restarts)"
     );
   }
   return _client;

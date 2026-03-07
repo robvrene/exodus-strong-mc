@@ -134,7 +134,9 @@ function checkDrive(): HealthCheck {
 }
 
 async function checkSelfPing(): Promise<HealthCheck> {
-  const baseUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DASHBOARD_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
   const start = Date.now();
   try {
     const resp = await fetch(`${baseUrl}/api/demo-status`, { method: "GET" });
