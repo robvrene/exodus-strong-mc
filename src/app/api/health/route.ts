@@ -164,6 +164,16 @@ async function checkSelfPing(): Promise<HealthCheck> {
   }
 }
 
+function checkFalAI(): HealthCheck {
+  const key = process.env.FAL_API_KEY;
+  return {
+    service: "fal.ai (Ad Images)",
+    status: key ? "green" : "yellow",
+    latency: 0,
+    message: key ? "API key configured" : "FAL_API_KEY not set — ad image generation disabled",
+  };
+}
+
 export async function GET() {
   const checks = await Promise.all([
     checkDatabase(),
@@ -171,6 +181,7 @@ export async function GET() {
     checkGHL(),
     checkStripe(),
     Promise.resolve(checkDrive()),
+    Promise.resolve(checkFalAI()),
     checkSelfPing(),
   ]);
 

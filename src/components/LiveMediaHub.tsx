@@ -22,6 +22,20 @@ interface MediaItem {
   created_at: string;
 }
 
+function isImageUrl(url: string): boolean {
+  try {
+    const u = new URL(url);
+    const path = u.pathname.toLowerCase();
+    if (/\.(png|jpg|jpeg|gif|webp|svg|avif)$/.test(path)) return true;
+    // fal.ai and other CDN URLs often don't have extensions — detect by host
+    if (u.hostname.includes("fal.media") || u.hostname.includes("fal-cdn")) return true;
+    if (u.hostname.includes("fal.ai")) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 const TABS = [
   { id: "all", label: "All" },
   { id: "funnel", label: "Funnels" },
@@ -221,6 +235,22 @@ export default function LiveMediaHub() {
                       </span>
                     )}
                   </div>
+
+                  {/* Image preview for generated ad images */}
+                  {item.output_url && isImageUrl(item.output_url) && (
+                    <div style={{
+                      marginBottom: 10, borderRadius: 6, overflow: "hidden",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "rgba(0,0,0,0.3)",
+                    }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.output_url}
+                        alt={item.task_name}
+                        style={{ width: "100%", height: "auto", display: "block" }}
+                      />
+                    </div>
+                  )}
 
                   {/* Path preview */}
                   {item.output_path && (
