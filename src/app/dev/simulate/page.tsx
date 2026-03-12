@@ -107,55 +107,6 @@ export default function SimulatePage() {
     }
   };
 
-  const fireAdImageSingle = async () => {
-    addLog("Generating single ad image (Facebook Ad — Service)...", "pending");
-    try {
-      const resp = await fetch("/api/generate-ad-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          businessName: BUSINESS_NAME,
-          produceType: "serve",
-          channel: "paid",
-          adHeadline: "Transform Your Business in 30 Days",
-        }),
-      });
-      const data = await resp.json();
-      if (resp.ok) {
-        addLog(`Ad image generated: ${data.imageUrl?.slice(0, 60)}...`, "ok");
-      } else {
-        addLog(`Ad image failed: ${data.error}`, "error");
-      }
-    } catch (err) {
-      addLog(`Ad image error: ${err instanceof Error ? err.message : "Network error"}`, "error");
-    }
-  };
-
-  const fireAdCreativePack = async () => {
-    addLog("Generating full ad creative pack (all channels)...", "pending");
-    try {
-      const resp = await fetch("/api/generate-ad-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          mode: "pack",
-          businessName: BUSINESS_NAME,
-          produceTypes: ["serve"],
-          channels: ["paid", "publish"],
-          adHeadline: "Scale Your Revenue with AI",
-        }),
-      });
-      const data = await resp.json();
-      if (resp.ok) {
-        addLog(`Creative pack: ${data.images?.length} images generated`, "ok");
-      } else {
-        addLog(`Creative pack failed: ${data.error}`, "error");
-      }
-    } catch (err) {
-      addLog(`Creative pack error: ${err instanceof Error ? err.message : "Network error"}`, "error");
-    }
-  };
-
   const fireRandomBlocked = async () => {
     await fire("task_update", {
       taskName: "GHL Automation: Lead Nurture Workflow",
@@ -273,8 +224,6 @@ export default function SimulatePage() {
           <SimButton label="Wave 3 — Spawn 2 bots" sub="Create tasks" onClick={() => spawnWaveTasks(WAVE_3_TASKS, 3)} color="#FF4EDB" disabled={running} />
           <SimButton label="Wave 3 — Complete all" sub="Process tasks" onClick={() => { completeWaveTasks(WAVE_3_TASKS); }} color="#10B981" disabled={running} />
           <SimButton label="Random Task BLOCKED" sub="Simulate failure" onClick={fireRandomBlocked} color="#EF4444" disabled={running} />
-          <SimButton label="Generate Ad Image" sub="Single — Facebook Ad" onClick={fireAdImageSingle} color="#FF4EDB" disabled={running} />
-          <SimButton label="Ad Creative Pack" sub="Multi-channel batch" onClick={fireAdCreativePack} color="#FF4EDB" disabled={running} />
         </div>
 
         {/* Full run button */}
