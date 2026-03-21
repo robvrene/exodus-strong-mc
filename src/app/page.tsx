@@ -8,10 +8,6 @@ import ProfitPipeline from "@/components/ProfitPipeline";
 import MediaHub from "@/components/MediaHub";
 import Projects from "@/components/Projects";
 import Financials from "@/components/Financials";
-import LiveKanban from "@/components/LiveKanban";
-import RevenuePlanner from "@/components/RevenuePlanner";
-import LiveMediaHub from "@/components/LiveMediaHub";
-import StartupCheck from "@/components/StartupCheck";
 import PhaseProgress from "@/components/PhaseProgress";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useSSE } from "@/lib/useSSE";
@@ -23,13 +19,6 @@ import { useSSE } from "@/lib/useSSE";
 const SEPARATOR = "---";
 
 const navItems = [
-  // Live demo section
-  { id: "pre-flight", label: "Pre-Flight", icon: "🔧", color: "#F59E0B" },
-  { id: "mission-control", label: "Mission Control", icon: "🛰️", color: "#7B61FF" },
-  { id: "revenue-planner", label: "Revenue Planner", icon: "🚀", color: "#FF4EDB" },
-  { id: "live-media", label: "Live Media Hub", icon: "📡", color: "#2F80FF" },
-  { id: SEPARATOR, label: "", icon: "", color: "" },
-  // Original demo views
   { id: "ceo-dashboard", label: "CEO Dashboard", icon: "📊", color: "#FF4EDB" },
   { id: "revenue-engine", label: "Revenue Engine", icon: "💰", color: "#10B981" },
   { id: "ai-workforce", label: "AI Workforce", icon: "🤖", color: "#2F80FF" },
@@ -52,7 +41,7 @@ interface DemoState {
 }
 
 export default function Home() {
-  const [activeView, setActiveView] = useState("pre-flight");
+  const [activeView, setActiveView] = useState("ceo-dashboard");
   const [demo, setDemo] = useState<DemoState>({
     id: null,
     businessName: null,
@@ -251,26 +240,6 @@ export default function Home() {
 
         {/* Main Content Area */}
         <div style={{ flex: 1, overflow: "auto" }}>
-          {/* Live demo views */}
-          {activeView === "pre-flight" && (
-            <ErrorBoundary fallbackLabel="Pre-Flight Check"><StartupCheck /></ErrorBoundary>
-          )}
-          {activeView === "mission-control" && (
-            <ErrorBoundary fallbackLabel="Mission Control"><LiveKanban /></ErrorBoundary>
-          )}
-          {activeView === "revenue-planner" && (
-            <ErrorBoundary fallbackLabel="Revenue Planner">
-              <RevenuePlanner
-                demoId={demo.id}
-                onLocked={() => setActiveView("mission-control")}
-              />
-            </ErrorBoundary>
-          )}
-          {activeView === "live-media" && (
-            <ErrorBoundary fallbackLabel="Live Media Hub"><LiveMediaHub /></ErrorBoundary>
-          )}
-
-          {/* Original demo views */}
           {activeView === "ceo-dashboard" && (
             <ErrorBoundary fallbackLabel="CEO Dashboard"><CEODashboard /></ErrorBoundary>
           )}
