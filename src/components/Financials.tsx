@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FINANCIAL_DATA } from "@/config/exodus-data";
 
 type TabType = "business" | "personal";
 
@@ -377,137 +378,70 @@ const BusinessTab = () => (
   <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
     {/* Row 1 — The Big Numbers */}
     <div>
-      <SectionHeader title="THE BIG NUMBERS" subtitle="Month-to-date performance" />
+      <SectionHeader title="THE BIG NUMBERS" subtitle="Week 1 — Foundation Phase" />
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <KPICard
-          label="Total Revenue (MTD)"
-          value="$127,450"
-          trend="23%"
-          trendPositive={true}
-        />
-        <KPICard label="Total Revenue (YTD)" value="$1.24M" subValue="On track for $1.8M annual" />
-        <KPICard
-          label="Net Profit (MTD)"
-          value="$89,200"
-          subValue="70% margin"
-          color="#10B981"
-        />
-        <KPICard label="Cash Position" value="$342,500" subValue="Operating account" />
+        {FINANCIAL_DATA.business.kpis.map((k, i) => (
+          <KPICard key={i} label={k.label} value={k.value} subValue={k.subValue} color={k.color} />
+        ))}
       </div>
     </div>
 
-    {/* Row 2 — Cash Flow */}
+    {/* Row 2 — Revenue by Product */}
     <div>
-      <SectionHeader title="CASH FLOW" subtitle="Money movement" />
-      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <MetricCard label="Operating Cash Flow" value="+$94,300" color="#10B981" />
-        <MetricCard label="Accounts Receivable" value="$45,200" subtext="Outstanding invoices" />
-        <MetricCard label="Accounts Payable" value="$12,800" subtext="Due within 30 days" />
-        <MetricCard label="Runway" value="8.2 months" subtext="At current burn rate" />
-      </div>
+      <SectionHeader title="REVENUE BY PRODUCT" subtitle="AC Ascension Funnel stack" />
+      <DataTable headers={["Product", "Revenue", "Status"]} rows={FINANCIAL_DATA.business.productRevenue} />
     </div>
 
-    {/* Row 3 — Revenue Breakdown by Offer */}
+    {/* Row 3 — Revenue by Channel */}
     <div>
-      <SectionHeader title="REVENUE BREAKDOWN BY OFFER" />
-      <DataTable
-        headers={["Offer", "Revenue", "% of Total"]}
-        rows={[
-          ["Done For You ($50K)", "$100,000", "78%"],
-          ["Workshop ($5K)", "$15,000", "12%"],
-          ["VIP Challenge ($97)", "$8,250", "6%"],
-          ["Book Sales", "$4,200", "4%"],
-        ]}
-      />
+      <SectionHeader title="REVENUE BY CHANNEL" subtitle="The Nehemiah Protocol — 4 Pillars" />
+      <DataTable headers={["Channel", "Revenue", "Timeline"]} rows={FINANCIAL_DATA.business.revenueByChannel} highlightLast={true} />
     </div>
 
-    {/* Row 4 — Revenue by Channel */}
+    {/* Row 4 — Cash Projections */}
     <div>
-      <SectionHeader title="REVENUE BY CHANNEL" subtitle="Attribution analysis" />
-      <DataTable
-        headers={["Channel", "Revenue", "CPA", "ROAS"]}
-        rows={[
-          ["Paid Ads", "$62,000", "$42", "4.2x"],
-          ["Organic", "$38,000", "$0", "∞"],
-          ["Referrals", "$18,000", "$0", "∞"],
-          ["Partnerships", "$9,450", "—", "—"],
-        ]}
-      />
+      <SectionHeader title="CASH GENERATION TIMELINE" subtitle="The Nehemiah Protocol — Project Jubilee" />
+      <DataTable headers={["Event", "Revenue Driver", "Projection"]} rows={FINANCIAL_DATA.business.cashProjections} />
     </div>
 
-    {/* Row 5 — Expenses Breakdown */}
+    {/* Row 5 — Expenses */}
     <div>
-      <SectionHeader title="EXPENSES BREAKDOWN" subtitle="Where the money goes" />
-      <DataTable
-        headers={["Category", "Amount", "% of Revenue"]}
-        rows={[
-          ["Advertising", "$18,200", "14%"],
-          ["Payroll & Contractors", "$12,400", "10%"],
-          ["Software & Tools", "$3,200", "2.5%"],
-          ["Operations", "$2,100", "1.6%"],
-          ["Other", "$2,350", "1.8%"],
-          ["Total Expenses", "$38,250", "30%"],
-        ]}
-        highlightLast={true}
-      />
+      <SectionHeader title="CURRENT EXPENSES" subtitle="Week 1 foundation spend" />
+      <DataTable headers={["Category", "Weekly / Monthly", "Notes"]} rows={FINANCIAL_DATA.business.expenses} highlightLast={true} />
     </div>
 
     {/* Row 6 — Key Metrics */}
     <div>
-      <SectionHeader title="KEY METRICS" subtitle="Unit economics & efficiency" />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-          gap: 12,
-        }}
-      >
-        <MetricCard label="Gross Margin" value="78%" color="#10B981" />
-        <MetricCard label="Net Margin" value="70%" color="#10B981" />
-        <MetricCard label="Customer LTV" value="$4,250" />
-        <MetricCard label="CAC" value="$142" />
-        <MetricCard label="LTV:CAC Ratio" value="30:1" color="#10B981" />
-        <MetricCard label="MRR" value="$8,500" subtext="Recurring revenue" />
+      <SectionHeader title="KEY METRICS" subtitle="Unit economics targets (Sultanic zero-liquidation model)" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12 }}>
+        <MetricCard label="Front-End Price" value="$47" subtext="Light Code Book" />
+        <MetricCard label="OTO1 Price" value="$67" subtext="Molecular Hydrogen — pixel point" />
+        <MetricCard label="Subscription" value="$60/mo" subtext="Backend recurring" color="#10B981" />
+        <MetricCard label="Warm List Size" value="8,400" subtext="GATE II — protected" color="#F59E0B" />
+        <MetricCard label="CAC Target" value="<$150" subtext="Laurel Method scale threshold" />
+        <MetricCard label="Projected LTV" value="$127+" subtext="Book + OTO + 2mo sub" color="#10B981" />
       </div>
     </div>
 
-    {/* Row 7 — Budget vs Actual */}
+    {/* Row 7 — Budget vs Actual (Phase 1) */}
     <div>
-      <SectionHeader title="BUDGET VS ACTUAL" subtitle="Tracking against plan" />
-      <div
-        style={{
-          background: "rgba(255,255,255,0.02)",
-          borderRadius: 12,
-          padding: 20,
-          border: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <ProgressBar label="Revenue" percentage={112} color="#10B981" />
-        <ProgressBar label="Expenses" percentage={94} color="#7B61FF" />
-        <ProgressBar label="Net Profit" percentage={118} color="#2F80FF" />
+      <SectionHeader title="PHASE 1 PROGRESS" subtitle="Foundation (Weeks 1–4)" />
+      <div style={{ background: "rgba(255,255,255,0.02)", borderRadius: 12, padding: 20, border: "1px solid rgba(255,255,255,0.06)" }}>
+        <ProgressBar label="Compliance (The Levite)" percentage={100} color="#10B981" />
+        <ProgressBar label="Cold Email Infrastructure" percentage={10} color="#2F80FF" />
+        <ProgressBar label="Red Wave Phase 1" percentage={15} color="#FF4EDB" />
+        <ProgressBar label="AC Ascension Funnel" percentage={5} color="#7B61FF" />
+        <ProgressBar label="Laurel Phase 1" percentage={5} color="#F59E0B" />
       </div>
     </div>
 
     {/* Row 8 — 90-Day Forecast */}
     <div>
-      <SectionHeader title="90-DAY FORECAST" subtitle="Looking ahead" />
+      <SectionHeader title="90-DAY FORECAST" subtitle="Conservative Nehemiah Protocol projections" />
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <KPICard
-          label="Projected Revenue"
-          value="$420,000"
-          subValue="Based on current pipeline"
-        />
-        <KPICard
-          label="Projected Expenses"
-          value="$126,000"
-          subValue="30% of revenue target"
-        />
-        <KPICard
-          label="Projected Net Profit"
-          value="$294,000"
-          subValue="70% margin maintained"
-          color="#10B981"
-        />
+        <KPICard label="Month 3 Cumulative" value="$60K–$80K" subValue="Conservative — all channels live" color="#10B981" />
+        <KPICard label="Month 3 Ad Spend" value="~$2K–$5K" subValue="Laurel Phase 3–4 scaling" />
+        <KPICard label="Month 3 MRR" value="$1K–$3K" subValue="Subscriptions + recurring" color="#10B981" />
       </div>
     </div>
   </div>
@@ -516,70 +450,26 @@ const BusinessTab = () => (
 // Personal Tab Content
 const PersonalTab = () => (
   <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-    {/* Row 1 — Net Worth Overview */}
+    {/* Row 1 — Personal KPIs */}
     <div>
-      <SectionHeader title="NET WORTH OVERVIEW" subtitle="Total financial position" />
+      <SectionHeader title="PERSONAL FINANCIAL PICTURE" subtitle="Week 1 — Foundation Phase · Project Jubilee" />
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <KPICard
-          label="Total Net Worth"
-          value="$2.4M"
-          color="#10B981"
-        />
-        <KPICard label="Liquid Assets" value="$485,000" subValue="Immediately accessible" />
-        <KPICard label="Investments" value="$890,000" subValue="Stocks, crypto, private" />
-        <KPICard label="Real Estate Equity" value="$720,000" />
-      </div>
-      <div style={{ display: "flex", gap: 16, marginTop: 16, flexWrap: "wrap" }}>
-        <KPICard label="Business Equity" value="$850,000" subValue="AIM + 239 Capital" />
-        <KPICard
-          label="Total Liabilities"
-          value="-$545,000"
-          color="#EF4444"
-          subValue="Mortgages & debt"
-        />
+        {FINANCIAL_DATA.personal.kpis.map((k, i) => (
+          <KPICard key={i} label={k.label} value={k.value} subValue={k.subValue} color={k.color} />
+        ))}
       </div>
     </div>
 
-    {/* Row 2 — Monthly Personal Cash Flow */}
+    {/* Row 2 — Income Streams */}
     <div>
-      <SectionHeader title="MONTHLY PERSONAL CASH FLOW" />
-      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <MetricCard label="Income (All Sources)" value="$125,000" color="#10B981" />
-        <MetricCard label="Personal Expenses" value="$28,500" />
-        <MetricCard label="Savings/Investment" value="$96,500" color="#10B981" />
-        <MetricCard label="Savings Rate" value="77%" color="#10B981" subtext="Exceptional" />
-      </div>
+      <SectionHeader title="INCOME STREAMS" subtitle="Building from zero — The Nehemiah Protocol" />
+      <DataTable headers={["Source", "Monthly", "Status"]} rows={FINANCIAL_DATA.personal.incomeStreams} highlightLast={true} />
     </div>
 
-    {/* Row 3 — Income Sources */}
+    {/* Row 3 — Jubilee Goals */}
     <div>
-      <SectionHeader title="INCOME SOURCES" subtitle="Where the money comes from" />
-      <DataTable
-        headers={["Source", "Monthly", "Annual"]}
-        rows={[
-          ["AIM Distributions", "$85,000", "$1.02M"],
-          ["239 Capital", "$25,000", "$300K"],
-          ["Investment Income", "$12,000", "$144K"],
-          ["Other", "$3,000", "$36K"],
-        ]}
-      />
-    </div>
-
-    {/* Row 4 — Personal Expenses */}
-    <div>
-      <SectionHeader title="PERSONAL EXPENSES" subtitle="Monthly breakdown" />
-      <DataTable
-        headers={["Category", "Monthly"]}
-        rows={[
-          ["Housing (mortgage, taxes, insurance)", "$8,500"],
-          ["Family & Living", "$6,200"],
-          ["Travel", "$4,800"],
-          ["Vehicles", "$2,400"],
-          ["Insurance & Health", "$3,100"],
-          ["Giving/Tithe", "$12,500"],
-          ["Other", "$3,000"],
-        ]}
-      />
+      <SectionHeader title="PROJECT JUBILEE MILESTONES" subtitle="Leviticus 25 — Complete debt freedom + full restoration" />
+      <DataTable headers={["Milestone", "Target", "Notes"]} rows={FINANCIAL_DATA.personal.goals} />
     </div>
 
     {/* Row 5 — Investment Portfolio */}

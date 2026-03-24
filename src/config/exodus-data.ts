@@ -797,3 +797,241 @@ export const FINANCIALS = {
   currentMRR: 0,
   currentCash: 0,           // Update as revenue comes in
 };
+
+// ─── REVENUE ENGINE (Promote/Profit/Produce framework) ────────────────────────
+
+export const REVENUE_ENGINE = {
+  promoteChannels: [
+    { id: "prospect", name: "Cold Email", icon: "📧", subtitle: "B2B Outreach at Scale", color: "#2F80FF",
+      desc: "Direct outreach to wellness clinic owners, church ministries, podcast producers, and corporate wellness directors. Virtually free — The Scribe and OpenClaw do the labor.",
+      tactics: ["3 cold domains warming (never exodusstrong.com)", "500+ B2B verified list via Apollo.io", "3-email sequence: Opener → Follow-up Day 3 → Breakup Day 7"],
+      effort: "3-MONTH RAMP", cost: "LOW COST" },
+    { id: "paid", name: "Paid Ads (Laurel)", icon: "📱", subtitle: "Laurel Method — 5 Phases", color: "#7B61FF",
+      desc: "Build the invisible list first with video view ads. Don't drive cold traffic to an unproven funnel. The Laurel Method: Phase 1 builds the audience, Phase 3 converts them.",
+      tactics: ["Phase 1: $15/day video views — build custom audiences", "Phase 3: FAST Funnel — Comment 'LIGHT' → Messenger", "Phase 4: HOT 7 Retargeting — 7 ad types rotating"],
+      effort: "PATIENT SYSTEM", cost: "$15/DAY TO START" },
+    { id: "publish", name: "Content (MVC Rhythm)", icon: "🎬", subtitle: "1 Pillar → 10–15 Assets", color: "#2F80FF",
+      desc: "Rob records one pillar video per week. The Multiplier repurposes it into 10–15 derivative assets. Carpe Diem schedules and publishes. Every post ends with a path to the funnel.",
+      tactics: ["1 pillar video/week (45–60 min of Rob's time)", "The Multiplier: Reels, clips, text posts, newsletter excerpts", "Platforms: Facebook (primary), Instagram, YouTube Shorts, X"],
+      effort: "COMPOUNDS OVER TIME", cost: "FREE (ROB'S TIME)" },
+    { id: "partnership", name: "Red Wave (Project Red Wave)", icon: "🌊", subtitle: "200+ Media Opportunities", color: "#FF4EDB",
+      desc: "Project Red Wave: faith-based radio, conservative media, wellness podcasts, and biohacking shows. Phase 1 is free guest appearances. Phase 2 activates paid placements after the funnel is proven.",
+      tactics: ["Phase 1 (free): PodMatch, MatchMaker.fm, top 5 guest apps", "Phase 2 ($5K): Don't Mom Alone, Natalie Tysdal, Biohacker Babes", "Jay manages outreach — Rob does the appearances"],
+      effort: "HIGH LEVERAGE", cost: "FREE → $5K PHASE 2" },
+  ],
+  profitMechanisms: [
+    { id: "centurion", name: "The Centurion (DM Qualifier)", icon: "⚔️", type: "Call", color: "#FF4EDB",
+      desc: "High-ticket DM sales qualifier on Solomon. Pursues warm leads 24/7, routes qualified prospects to discovery calls. Deploys Week 7. Target: show rate >70%, close rate >20%." },
+    { id: "ac-funnel", name: "AC Ascension Funnel", icon: "📖", type: "Cart", color: "#7B61FF",
+      desc: "Light Code Book ($47) → Order Bump → OTO1 ($67 Molecular Hydrogen) → OTO2 (RLT Device) → $60/mo subscription. Built with Zipify OCU. Pixel optimized at OTO1." },
+    { id: "call-funnel", name: "Discovery Call Funnel", icon: "📞", type: "Call", color: "#2F80FF",
+      desc: "Qualifies prospects from Laurel FAST Funnel and cold email responses. Books calls for high-ticket device and wholesale opportunities." },
+    { id: "fast-funnel", name: "Laurel FAST Funnel", icon: "💬", type: "Cart", color: "#2F80FF",
+      desc: "Comment 'LIGHT' → Messenger → 9–10 diagnostic exchanges → GFL or GFN. 40%+ response rate from warm audiences. Activates Week 5 when audiences hit 1,000+." },
+    { id: "warm-list", name: "Warm List Launch", icon: "📬", type: "Crowd", color: "#10B981",
+      desc: "8,400 Beehiiv subscribers. The Cash Event. God Algorithm → Quiz Funnel Bridge (5 emails). Projected $11K–$28K one-time. LOCKED behind Gate II — funnel must be proven first." },
+    { id: "challenge-guide", name: "$27 Light Code Challenge", icon: "⚡", type: "Cart", color: "#F59E0B",
+      desc: "Maria Wint $27 model. 40-Day Light Code Challenge guide → OB ($19 Frequency Mist sample) → OTO ($47 Book). Zero COGS. Alternative funnel entry. Launches Month 2." },
+    { id: "event", name: "Red Wave Phase 2 Placements", icon: "📻", type: "Crowd", color: "#7B61FF",
+      desc: "Paid media placements: Don't Mom Alone, Natalie Tysdal, Heather Brown, Bott Radio, Biohacker Babes. $5,000 test budget. Activates Week 7–8 after Gate I clears." },
+  ],
+  produceCategories: [
+    { id: "ship", label: "SHIP", color: "#2F80FF", desc: "Physical and digital products",
+      items: [
+        { id: "light-code-book", name: "Light Code Book ($47)", icon: "📖", desc: "Primary front-end digital product. The Sultanic AC Funnel entry point." },
+        { id: "challenge-guide", name: "$27 Challenge Guide", icon: "⚡", desc: "40-Day Light Code Challenge. Maria Wint model. Zero COGS. Month 2 launch." },
+        { id: "rlt-devices", name: "RLT Devices", icon: "💡", desc: "Red light therapy devices. High-ticket OTO2. TikTok Shop pilot via The Ambassador (Week 9+)." },
+        { id: "face-mask", name: "Face Mask+", icon: "✨", desc: "YELLOW FLAG pending Gate III. TikTok Shop affiliate pilot planned Week 9+." },
+      ]},
+    { id: "serve", label: "SERVE", color: "#FF4EDB", desc: "Done-for-you and subscription fulfillment",
+      items: [
+        { id: "subscription", name: "Light Code Subscription ($60/mo)", icon: "🔄", desc: "Backend recurring revenue. Day 14 pitch to book buyers. 10% conversion target." },
+        { id: "frequency-mist", name: "Frequency Mist+ (7 SKUs)", icon: "🌿", desc: "Frequency patches and mist. The Steward of Supply monitors inventory (Week 9+)." },
+      ]},
+    { id: "unlock", label: "UNLOCK", color: "#7B61FF", desc: "Access and recurring models",
+      items: [
+        { id: "molecular-hydrogen", name: "Molecular Hydrogen ($67 OTO)", icon: "⚗️", desc: "Exodus Supplement + Molecular Hydrogen. OTO1 — pixel optimization point for Meta Purchase event." },
+        { id: "biohackingville", name: "BiohackingVille Community", icon: "🏛️", desc: "Circle.so community. The Cornerstone (Week 9). Free tier until 500+ engaged members." },
+      ]},
+    { id: "shift", label: "SHIFT", color: "#10B981", desc: "Faith-based transformation and coaching",
+      items: [
+        { id: "light-code-system", name: "Light Code System", icon: "✝️", desc: "4-pillar faith + wellness framework: Light, Frequency, Fuel, Faith. The brand promise." },
+        { id: "qe-strong", name: "QE Strong Patches", icon: "🩹", desc: "YELLOW FLAG — Gate III unresolved. +Quantum branding under regulatory review. Levite flags all content." },
+      ]},
+  ],
+};
+
+// ─── MEDIA HUB (real Week 1 starting metrics) ─────────────────────────────────
+
+export const MEDIA_CHANNELS = [
+  {
+    id: "facebook",
+    name: "Facebook",
+    platform: "facebook",
+    icon: "👥",
+    color: "#1877F2",
+    metrics: {
+      today:  { primary: { label: "PAGE LIKES", value: "—" },    secondary: { label: "REACH", value: "—" },     tertiary: { label: "ENGAGE %", value: "—" },    growth: 0 },
+      "7d":   { primary: { label: "PAGE LIKES", value: "—" },    secondary: { label: "REACH", value: "—" },     tertiary: { label: "ENGAGE %", value: "—" },    growth: 0 },
+      "30d":  { primary: { label: "PAGE LIKES", value: "—" },    secondary: { label: "REACH", value: "—" },     tertiary: { label: "ENGAGE %", value: "—" },    growth: 0 },
+      "90d":  { primary: { label: "PAGE LIKES", value: "—" },    secondary: { label: "REACH", value: "—" },     tertiary: { label: "ENGAGE %", value: "—" },    growth: 0 },
+      ytd:    { primary: { label: "PAGE LIKES", value: "—" },    secondary: { label: "REACH", value: "—" },     tertiary: { label: "ENGAGE %", value: "—" },    growth: 0 },
+    },
+    note: "Primary platform. Laurel Phase 1 video view ads running ($15/day).",
+  },
+  {
+    id: "instagram",
+    name: "Instagram",
+    platform: "instagram",
+    icon: "📸",
+    color: "#E4405F",
+    metrics: {
+      today:  { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "REACH", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      "7d":   { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "REACH", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      "30d":  { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "REACH", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      "90d":  { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "REACH", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      ytd:    { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "REACH", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+    },
+    note: "Tier 1 platform. The Trumpet feeds Carpe Diem content queue (Week 5+).",
+  },
+  {
+    id: "tiktok",
+    name: "TikTok",
+    platform: "tiktok",
+    icon: "🎵",
+    color: "#00F2EA",
+    metrics: {
+      today:  { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "VIEWS", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      "7d":   { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "VIEWS", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      "30d":  { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "VIEWS", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      "90d":  { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "VIEWS", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+      ytd:    { primary: { label: "FOLLOWERS", value: "—" },    secondary: { label: "VIEWS", value: "—" },    tertiary: { label: "ENGAGE %", value: "—" },   growth: 0 },
+    },
+    note: "Face Mask+ TikTok Shop pilot planned Week 9+ via The Ambassador.",
+  },
+  {
+    id: "youtube",
+    name: "YouTube",
+    platform: "youtube",
+    icon: "▶️",
+    color: "#FF0000",
+    metrics: {
+      today:  { primary: { label: "SUBSCRIBERS", value: "—" }, secondary: { label: "VIEWS", value: "—" },     tertiary: { label: "WATCH HRS", value: "—" }, growth: 0 },
+      "7d":   { primary: { label: "SUBSCRIBERS", value: "—" }, secondary: { label: "VIEWS", value: "—" },     tertiary: { label: "WATCH HRS", value: "—" }, growth: 0 },
+      "30d":  { primary: { label: "SUBSCRIBERS", value: "—" }, secondary: { label: "VIEWS", value: "—" },     tertiary: { label: "WATCH HRS", value: "—" }, growth: 0 },
+      "90d":  { primary: { label: "SUBSCRIBERS", value: "—" }, secondary: { label: "VIEWS", value: "—" },     tertiary: { label: "WATCH HRS", value: "—" }, growth: 0 },
+      ytd:    { primary: { label: "SUBSCRIBERS", value: "—" }, secondary: { label: "VIEWS", value: "—" },     tertiary: { label: "WATCH HRS", value: "—" }, growth: 0 },
+    },
+    note: "Pillar video content. Rob records 1/week. The Multiplier creates Shorts.",
+  },
+  {
+    id: "beehiiv",
+    name: "Beehiiv Newsletter",
+    platform: "twitter",
+    icon: "📰",
+    color: "#F59E0B",
+    metrics: {
+      today:  { primary: { label: "SUBSCRIBERS", value: "8,400" }, secondary: { label: "OPEN RATE", value: "—" },  tertiary: { label: "CLICK RATE", value: "—" }, growth: 0 },
+      "7d":   { primary: { label: "SUBSCRIBERS", value: "8,400" }, secondary: { label: "OPEN RATE", value: "—" },  tertiary: { label: "CLICK RATE", value: "—" }, growth: 0 },
+      "30d":  { primary: { label: "SUBSCRIBERS", value: "8,400" }, secondary: { label: "OPEN RATE", value: "—" },  tertiary: { label: "CLICK RATE", value: "—" }, growth: 0 },
+      "90d":  { primary: { label: "SUBSCRIBERS", value: "8,400" }, secondary: { label: "OPEN RATE", value: "—" },  tertiary: { label: "CLICK RATE", value: "—" }, growth: 0 },
+      ytd:    { primary: { label: "SUBSCRIBERS", value: "8,400" }, secondary: { label: "OPEN RATE", value: "—" },  tertiary: { label: "CLICK RATE", value: "—" }, growth: 0 },
+    },
+    note: "⚠️ GATE II: Warm list PROTECTED. No commercial emails until AC Ascension Funnel proven with cold traffic.",
+  },
+];
+
+// Content queue — Week 1 starting content
+export const CONTENT_QUEUE = [
+  { id: "c1", title: "My Exodus — Cancer Survival Story (Pillar Video #1)", copy: "The story behind the Light Code System. Rob's 4 near-death experiences and what God showed him about health.", image_url: null, media_type: "video" as const, media_urls: null, video_url: null, video_thumbnail: null, platform: "facebook" as const, status: "draft" as const, scheduled_for: null, campaign: "Laurel Phase 1", hashtags: "#LightCode #FaithHealth #BiohackingVille", created_by: "Rob", approved_by: null, rejected_by: null, rejection_reason: null, metadata: null, created_at: "2026-03-24T08:00:00Z" },
+  { id: "c2", title: "What is Red Light Therapy? (Light Pillar Reel)", copy: "The science behind photobiomodulation — how red light at 630–850nm penetrates tissue and activates mitochondria. Faith-based framing.", image_url: null, media_type: "reel" as const, media_urls: null, video_url: null, video_thumbnail: null, platform: "instagram" as const, status: "draft" as const, scheduled_for: null, campaign: "Organic Social", hashtags: "#RedLightTherapy #LightCode #NaturalHealth", created_by: "The Multiplier", approved_by: null, rejected_by: null, rejection_reason: null, metadata: null, created_at: "2026-03-24T09:00:00Z" },
+  { id: "c3", title: "Molecular Hydrogen — The Fuel Pillar Explained", copy: "Why molecular hydrogen is the most powerful antioxidant Rob has found. His personal experience. Structure/function claims only — Levite reviewed.", image_url: null, media_type: "video" as const, media_urls: null, video_url: null, video_thumbnail: null, platform: "youtube" as const, status: "draft" as const, scheduled_for: null, campaign: "Light Code Education", hashtags: "#MolecularHydrogen #ExodusStrong #Biohacking", created_by: "The Multiplier", approved_by: null, rejected_by: null, rejection_reason: null, metadata: null, created_at: "2026-03-24T09:30:00Z" },
+  { id: "c4", title: "Faith + Health — Why God Cares About Your Body (Text Post)", copy: "1 Corinthians 6:19 — your body is a temple. 3-paragraph story post for Facebook. CTA: link in bio to Light Code Book waitlist.", image_url: null, media_type: "image" as const, media_urls: null, video_url: null, video_thumbnail: null, platform: "facebook" as const, status: "pending" as const, scheduled_for: "2026-03-25T10:00:00Z", campaign: "Faith Pillar", hashtags: "#Faith #FaithHealth #ExodusStrong", created_by: "The Trumpet", approved_by: null, rejected_by: null, rejection_reason: null, metadata: null, created_at: "2026-03-24T10:00:00Z" },
+];
+
+// ─── FINANCIALS (Exodus Strong real picture) ──────────────────────────────────
+
+export const FINANCIAL_DATA = {
+  business: {
+    kpis: [
+      { label: "CURRENT MRR", value: "$0", subValue: "Week 1 — building phase", color: "#F5F7FA" },
+      { label: "PROJECTED MONTH 3", value: "$60K–$80K", subValue: "Conservative cumulative", color: "#10B981" },
+      { label: "PROJECT JUBILEE TARGET", value: "$250K+", subValue: "6-month conservative", color: "#C9A84C" },
+      { label: "AD SPEND (WEEK 1)", value: "$105", subValue: "$15/day × 7 days (Laurel Phase 1)", color: "#F5F7FA" },
+    ],
+    revenueByChannel: [
+      ["Cold Email (B2B)", "$0", "Week 5+ (after warmup)"],
+      ["AC Ascension Funnel", "$0", "Week 5+ (post Gate II)"],
+      ["Warm List Launch", "$0", "Week 5–6 (THE CASH EVENT)"],
+      ["Subscriptions ($60/mo)", "$0", "Week 7+ (from book buyers)"],
+      ["Red Wave Phase 2", "$0", "Week 7–8 (after Gate I)"],
+      ["Affiliate Revenue", "$0", "Week 10+ (The Ambassador)"],
+      ["TOTAL", "$0", "Foundation phase"],
+    ],
+    productRevenue: [
+      ["Light Code Book ($47)", "$0", "In build"],
+      ["Molecular Hydrogen OTO ($67)", "$0", "In build"],
+      ["RLT Device (OTO2)", "$0", "In build"],
+      ["$60/mo Subscription", "$0", "In build"],
+      ["$27 Challenge Guide", "$0", "Month 2"],
+      ["QE Strong Patches", "$0", "GATE III pending"],
+      ["TOTAL", "$0", "Foundation phase"],
+    ],
+    expenses: [
+      ["Laurel Phase 1 Ads", "$105/wk", "$450/mo"],
+      ["Instantly/Smartlead", "~$97/mo", "Cold email platform"],
+      ["Cold Email Domains (3)", "~$30/yr", "One-time setup"],
+      ["GoHighLevel CRM", "Included", "Goletti workshop"],
+      ["Carpe Diem Agency", "TBD", "Content scheduling"],
+      ["Actovision (Surya)", "TBD", "Funnel builds"],
+      ["TOTAL MONTHLY", "~$650", "Foundation phase"],
+    ],
+    cashProjections: [
+      ["Week 3+", "Cart Recovery (Merchant)", "$2K–$4K/mo"],
+      ["Week 5–6", "⚡ Warm List Launch", "$11K–$28K (ONE-TIME)"],
+      ["Week 5+", "Cold Email B2B", "$500–$2K/mo"],
+      ["Week 7+", "Subscriptions", "$1K–$3K/mo recurring"],
+      ["Week 7–8", "Red Wave Phase 2", "$1K–$5K/mo"],
+      ["Month 3 cumulative", "Conservative total", "$60K–$80K"],
+      ["6-month cumulative", "PROJECT JUBILEE", "$250K–$400K"],
+    ],
+  },
+  personal: {
+    kpis: [
+      { label: "MONTHLY TAKE-HOME", value: "$0", subValue: "Reinvesting everything in Phase 1", color: "#F5F7FA" },
+      { label: "BUSINESS EQUITY", value: "Building", subValue: "Exodus Strong + BiohackingVille + QE Strong", color: "#C9A84C" },
+      { label: "WARM LIST VALUE", value: "8,400 subs", subValue: "Protected — non-repeatable asset", color: "#10B981" },
+      { label: "DEBT FREEDOM GOAL", value: "Project Jubilee", subValue: "Leviticus 25 — the north star", color: "#C9A84C" },
+    ],
+    incomeStreams: [
+      ["Exodus Strong (product sales)", "$0", "Building"],
+      ["Light Code Subscriptions", "$0", "Week 7+"],
+      ["Red Wave Media Revenue", "$0", "Week 7+"],
+      ["B2B / Wholesale", "$0", "Week 5+"],
+      ["Affiliate Commissions", "$0", "Week 10+"],
+      ["TOTAL", "$0", "Foundation phase"],
+    ],
+    goals: [
+      ["Month 3 cash target", "$60K–$80K", "All into business"],
+      ["Month 6 cash target", "$250K–$400K", "Project Jubilee threshold"],
+      ["Subscription MRR goal", "$10K+/mo", "By Month 6"],
+      ["Beehiiv list at launch", "8,400 subs", "PROTECTED — Gate II"],
+    ],
+  },
+};
+
+// ─── PROFIT PIPELINE (CRM pipeline leads) ────────────────────────────────────
+
+export const PIPELINE_LEADS = {
+  "book-a-call": [
+    { id: 1, name: "Wellness Clinic Owner (Dallas)", email: "prospect@wellnessclinic.com", phone: "", value: 2500, stage: "new-lead", source: "Cold Email", entryDate: "2026-03-24", temp: "warm", tags: [{ type: "status", label: "B2B Target" }], workflow: "Cold Email Sequence", notes: [{ date: "2026-03-24", content: "Domain warming — first real outreach Week 4–5", agent: "The Scribe" }] },
+    { id: 2, name: "Church Wellness Ministry (TX)", email: "ministry@example.com", phone: "", value: 1500, stage: "new-lead", source: "Red Wave", entryDate: "2026-03-24", temp: "warm", tags: [{ type: "status", label: "Red Wave Lead" }], workflow: "Red Wave Phase 1", notes: [{ date: "2026-03-24", content: "Guest application submitted — awaiting booking", agent: "Jay" }] },
+    { id: 3, name: "Corporate Wellness Director", email: "wellness@corp.com", phone: "", value: 5000, stage: "new-lead", source: "Cold Email", entryDate: "2026-03-24", temp: "cold", tags: [{ type: "status", label: "B2B Enterprise" }], workflow: "Cold Email Sequence", notes: [{ date: "2026-03-24", content: "On B2B list — outreach starts Week 4–5", agent: "The Scribe" }] },
+  ],
+  webinar: [
+    { id: 4, name: "Beehiiv Subscriber (warm)", email: "subscriber@example.com", phone: "", value: 47, stage: "registered", source: "Newsletter", entryDate: "2026-03-24", temp: "hot", tags: [{ type: "status", label: "Warm List" }, { type: "behavior", label: "GATE II PROTECTED" }], workflow: "God Algorithm Bridge", notes: [{ date: "2026-03-24", content: "List LOCKED — no commercial email until funnel proven with cold traffic", agent: "Solomon" }] },
+  ],
+  challenge: [
+    { id: 5, name: "Facebook Video Viewer (25%+)", email: "", phone: "", value: 47, stage: "registered", source: "Laurel Phase 1", entryDate: "2026-03-24", temp: "warm", tags: [{ type: "status", label: "Video Viewer" }, { type: "behavior", label: "Building Audience" }], workflow: "Laurel Phase 1 → Phase 3", notes: [{ date: "2026-03-24", content: "Audience building — custom audiences not at 1K threshold yet for FAST Funnel", agent: "Solomon" }] },
+  ],
+};

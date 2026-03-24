@@ -1,76 +1,16 @@
 import { useState } from "react";
+import { REVENUE_ENGINE } from "@/config/exodus-data";
 
-const promoteChannels = [
-  { id: "prospect", name: "Prospect", icon: "📧", subtitle: "Cold Outreach at Scale", color: "#2F80FF",
-    desc: "Direct outreach to strangers. Virtually free - your AI does the labor.",
-    tactics: ["Cold email sequences (multi-domain)", "LinkedIn outreach & DM campaigns", "List building & verification"],
-    effort: "HIGH VOLUME", cost: "LOW COST" },
-  { id: "paid", name: "Paid", icon: "💰", subtitle: "Paid Advertising", color: "#7B61FF",
-    desc: "Spend money to put offers in front of buyers fast. AI creates, tests, and optimizes.",
-    tactics: ["Facebook/Meta ads", "YouTube/Google ads", "Retargeting sequences"],
-    effort: "FAST RESULTS", cost: "REQUIRES BUDGET" },
-  { id: "publish", name: "Publish", icon: "🎬", subtitle: "Content → Offer Engine", color: "#2F80FF",
-    desc: "Free content that drives to funnels. Every post ends with a path to a transaction.",
-    tactics: ["Short-form video (Shorts/Reels/TikTok)", "LinkedIn & X threads", "Blog/Podcast/SEO content"],
-    effort: "COMPOUNDS OVER TIME", cost: "FREE" },
-  { id: "partnership", name: "Partnership", icon: "🤝", subtitle: "Other People's Audiences", color: "#7B61FF",
-    desc: "Get others to put your offer in front of their people. Highest leverage play.",
-    tactics: ["Dream 100 pursuit", "Affiliate recruitment", "JV deals & guest appearances"],
-    effort: "HIGH LEVERAGE", cost: "RELATIONSHIP CAPITAL" },
-];
-
-const profitMechanisms = [
-  { id: "ai-sales", name: "AI Sales Team", icon: "🤖", type: "Call", color: "#FF4EDB",
-    desc: "AI-powered setter that pursues leads 24/7 - sells tickets to events, assists closers, closes directly." },
-  { id: "lto-funnel", name: "LTO (Limited Time Offer) Funnel", icon: "⚡", type: "Cart", color: "#2F80FF",
-    desc: "Low-ticket impulse buy with urgency and scarcity. Converts cold traffic into buyers fast." },
-  { id: "call-funnel", name: "Book-a-Call Funnel", icon: "📞", type: "Call", color: "#2F80FF",
-    desc: "Qualifies prospects and books sales calls. Best for high-ticket closes." },
-  { id: "book-funnel", name: "Free + Shipping Book Funnel", icon: "📖", type: "Cart", color: "#7B61FF",
-    desc: "Physical book as Trojan horse - mass distribution entry point into your value ladder." },
-  { id: "webinar", name: "Webinar Funnel", icon: "🎙️", type: "Crowd", color: "#2F80FF",
-    desc: "Free registration, 90min-2hr live presentation. Sells your core high-ticket offers." },
-  { id: "challenge", name: "Challenge Funnel", icon: "🏆", type: "Crowd", color: "#FF4EDB",
-    desc: "Multi-day live challenge with optional paid VIP upsell. Builds community and converts." },
-  { id: "event", name: "Event Funnel", icon: "🎤", type: "Crowd", color: "#7B61FF",
-    desc: "Live in-person or virtual event. Sells everything across the full value ladder." },
-];
+const promoteChannels = REVENUE_ENGINE.promoteChannels;
+const profitMechanisms = REVENUE_ENGINE.profitMechanisms;
+const produceCategories = REVENUE_ENGINE.produceCategories;
 
 const shelfFunnels = [
-  { name: "Lead Gen (Free Offer)", icon: "📋" },
-  { name: "Sales Page / VSL", icon: "🎬" },
-  { name: "Application Funnel", icon: "📝" },
-  { name: "Survey / Quiz Funnel", icon: "❓" },
-  { name: "Virtual Summit", icon: "🏔️" },
-];
-
-const produceCategories = [
-  { id: "ship", label: "SHIP", color: "#2F80FF", desc: "Physical and digital products sold at scale",
-    items: [
-      { id: "platform-sales", name: "Platform Sales", icon: "📦", desc: "Shopify, Amazon, Etsy, or marketplace-driven product sales." },
-      { id: "physical-products", name: "Physical Products", icon: "🎁", desc: "Tangible goods manufactured, sourced, or white-labeled." },
-      { id: "digital-products", name: "Digital Products", icon: "💾", desc: "eBooks, templates, courses, downloads, or digital assets." },
-    ]},
-  { id: "serve", label: "SERVE", color: "#FF4EDB", desc: "Done-for-you services and labor",
-    items: [
-      { id: "dfy-services", name: "DFY Services", icon: "⚡", desc: "Agency work, done-for-you builds, managed services, or labor." },
-    ]},
-  { id: "unlock", label: "UNLOCK", color: "#7B61FF", desc: "Access-based and recurring revenue models",
-    items: [
-      { id: "software", name: "Software", icon: "💻", desc: "SaaS, apps, tools, or platforms you own or white-label." },
-      { id: "licensing", name: "Licensing", icon: "📜", desc: "License your IP, frameworks, content, or technology to others." },
-      { id: "subscriptions", name: "Subscriptions, Workshops & Masterminds", icon: "🔓", desc: "Recurring access to community, training, content libraries, or live events." },
-    ]},
-  { id: "shift", label: "SHIFT", color: "#10B981", desc: "Transformation through expertise and guidance",
-    items: [
-      { id: "coaching", name: "Coaching", icon: "🎯", desc: "1-on-1 or group coaching programs that drive personal or business results." },
-      { id: "consulting", name: "Consulting", icon: "🧠", desc: "Strategic advisory, audits, implementation guidance, or fractional leadership." },
-      { id: "counseling", name: "Counseling", icon: "💚", desc: "Therapeutic, spiritual, or wellness-based guidance and support." },
-    ]},
-  { id: "misc", label: "MISC", color: "#6B7186", desc: "Anything else",
-    items: [
-      { id: "misc-other", name: "Other", icon: "📋", desc: "Custom revenue stream or unique business model." },
-    ]},
+  { name: "Biblical Biohacker Quiz Funnel", icon: "❓" },
+  { name: "Light Code Book VSL Page", icon: "🎬" },
+  { name: "Discovery Call Application", icon: "📝" },
+  { name: "God Algorithm Newsletter Bridge", icon: "📰" },
+  { name: "Red Wave Guest Appearance Page", icon: "🌊" },
 ];
 
 const allProduceItems = produceCategories.flatMap(cat => cat.items.map(item => ({ ...item, catColor: cat.color, catId: cat.id })));
