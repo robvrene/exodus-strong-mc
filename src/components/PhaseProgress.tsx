@@ -1,22 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { PHASES as CONFIG_PHASES } from "@/config/exodus-data";
 
 // ---------------------------------------------------------------------------
 // Phase Progress Bar — horizontal step tracker at the top of the dashboard
 // ---------------------------------------------------------------------------
 
-const PHASES = [
-  { id: "startup", label: "Startup", icon: "🔧" },
-  { id: "vision", label: "Vision", icon: "👁️" },
-  { id: "brand", label: "Brand", icon: "🎨" },
-  { id: "character", label: "Character", icon: "🎭" },
-  { id: "planner", label: "Planner", icon: "📋" },
-  { id: "wave1", label: "Wave 1", icon: "🌊" },
-  { id: "wave2", label: "Wave 2", icon: "🌊" },
-  { id: "wave3", label: "Wave 3", icon: "🌊" },
-  { id: "complete", label: "Complete", icon: "🏁" },
-];
+const PHASE_ICONS: Record<string, string> = {
+  foundation: "🏗️", compliance: "⚖️", funnel: "🔧",
+  launch: "🚀", scale: "📈", "red-wave": "🌊",
+  "red-wave-2": "🌊", moat: "🏰", jubilee: "🏁",
+};
+
+const PHASES = CONFIG_PHASES.map(p => ({
+  id: p.key,
+  label: p.label,
+  icon: PHASE_ICONS[p.key] ?? "📍",
+}));
 
 interface PhaseProgressProps {
   currentPhase: string;

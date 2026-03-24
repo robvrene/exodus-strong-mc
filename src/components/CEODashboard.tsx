@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import { ALERTS, CEO_KPI, PROMOTE_CHANNELS, PROFIT_FUNNELS, AI_SALES, PRODUCE_OFFERS, SCHEDULE, BRAND } from "@/config/exodus-data";
 
 const deptColors: Record<string, string> = { Prospect: "#2F80FF", Paid: "#7B61FF", Publish: "#2F80FF", Partner: "#7B61FF", Sales: "#FF4EDB", All: "#8A8F98" };
 
@@ -72,64 +73,64 @@ interface DataResult {
   };
 }
 
-const generateData = (startDate: Date, endDate: Date): DataResult => {
-  const days = daysBetween(startDate, endDate);
-  const m = days / 7;
-  const label = days === 1 ? "Today" : days <= 1 ? "Today" : `${days} Days`;
+// ── Exodus Strong: generateData pulls from config instead of hardcoded demo values ──
+const generateData = (_startDate: Date, _endDate: Date): DataResult => {
   return {
-    rangeLabel: label, days,
-    revenue: { current: Math.round(48500 * m), previous: Math.round(41200 * m) },
-    newSales: { count: Math.round(12 * m), value: Math.round(48500 * m) },
-    aov: { current: Math.round(48500 * m / Math.max(1, Math.round(12 * m))) },
-    leads: { current: Math.round(342 * m), previous: Math.round(298 * m) },
-    eventRegs: { webinar: Math.round(89 * m), challenge: Math.round(34 * m), total: Math.round(123 * m), previous: Math.round(105 * m) },
-    conversionRate: { current: 3.5, previous: 3.1 },
-    activeClients: {
-      dfy: { count: 2, capacity: 5, label: "Done For You" },
-      workshop: { count: 18, label: "Workshop" },
-      challenge: { count: 45, label: "VIP Challenge" },
-      book: { count: Math.round(210 * m), label: "Book Buyers" },
-    },
-    referrals: { current: Math.round(15 * m), previous: Math.round(11 * m) },
-    adSpend: { spend: Math.round(4200 * m), revenue: Math.round(18900 * m), roas: 4.5 },
-    alerts: [
-      { type: "red", message: "Challenge funnel conversion dropped 22% vs prior period", area: "Profit" },
-      { type: "yellow", message: "Cold email reply rate below 2% threshold on Segment B", area: "Promote" },
-      { type: "green", message: "Webinar attendance rate up 18% — highest in 90 days", area: "Promote" },
-    ],
+    rangeLabel: CEO_KPI.rangeLabel,
+    days: 7,
+    revenue: CEO_KPI.revenue,
+    newSales: CEO_KPI.newSales,
+    aov: CEO_KPI.aov,
+    leads: CEO_KPI.leads,
+    eventRegs: CEO_KPI.eventRegs,
+    conversionRate: CEO_KPI.conversionRate,
+    activeClients: CEO_KPI.activeClients as unknown as DataResult["activeClients"],
+    referrals: CEO_KPI.referrals,
+    adSpend: CEO_KPI.adSpend,
+    alerts: ALERTS,
     promote: {
-      channels: [
-        { name: "Prospect", icon: "📧", color: "#2F80FF", leads: Math.round(156 * m), eventRegs: Math.round(42 * m),
-          metrics: { sent: Math.round(28400 * m), replies: Math.round(568 * m), replyRate: 2.0, appointments: Math.round(23 * m) } },
-        { name: "Paid", icon: "💰", color: "#7B61FF", leads: Math.round(98 * m), eventRegs: Math.round(51 * m),
-          metrics: { spend: Math.round(4200 * m), clicks: Math.round(3400 * m), cpc: 1.24, cpl: Math.round(4200 * m / Math.max(1, Math.round(98 * m)) * 100) / 100 } },
-        { name: "Publish", icon: "🎬", color: "#2F80FF", leads: Math.round(53 * m), eventRegs: Math.round(18 * m),
-          metrics: { posts: Math.round(14 * m), impressions: Math.round(45000 * m), engagement: 3.2, clicks: Math.round(1800 * m) } },
-        { name: "Partnership", icon: "🤝", color: "#7B61FF", leads: Math.round(35 * m), eventRegs: Math.round(12 * m),
-          metrics: { activePartners: 8, newPartners: Math.round(2 * m), partnerLeads: Math.round(35 * m), commissions: Math.round(2400 * m) } },
-      ],
+      channels: PROMOTE_CHANNELS.map(ch => ({
+        name: ch.name,
+        icon: ch.icon,
+        color: ch.color,
+        leads: ch.leads,
+        eventRegs: ch.eventRegs,
+        metrics: ch.metrics as unknown as Record<string, number | string>,
+      })),
     },
     profit: {
-      funnels: [
-        { name: "Free + Shipping Book", icon: "📖", type: "Cart", color: "#7B61FF", visitors: Math.round(1240 * m), conversions: Math.round(210 * m), rate: 16.9, revenue: Math.round(4200 * m) },
-        { name: "Webinar", icon: "🎙️", type: "Crowd", color: "#2F80FF", visitors: Math.round(890 * m), conversions: Math.round(89 * m), rate: 10.0, revenue: Math.round(28000 * m) },
-        { name: "Challenge", icon: "🏆", type: "Crowd", color: "#FF4EDB", visitors: Math.round(420 * m), conversions: Math.round(34 * m), rate: 8.1, revenue: Math.round(3298 * m) },
-        { name: "Book-a-Call", icon: "📞", type: "Call", color: "#2F80FF", visitors: Math.round(67 * m), conversions: Math.round(8 * m), rate: 11.9, revenue: Math.round(13000 * m) },
-        { name: "Annual Event", icon: "🎤", type: "Crowd", color: "#7B61FF", visitors: 0, conversions: 0, rate: 0, revenue: 0, status: "PLANNED" },
-      ],
+      funnels: PROFIT_FUNNELS.map(f => ({
+        name: f.name,
+        icon: f.icon,
+        type: f.type,
+        color: f.color,
+        visitors: f.visitors,
+        conversions: f.conversions,
+        rate: f.rate,
+        revenue: f.revenue,
+        status: f.status,
+      })),
       aiSales: {
-        ticketsSold: Math.round(28 * m), assists: Math.round(45 * m), directSales: Math.round(6 * m),
-        totalConversations: Math.round(892 * m), responseTime: "1.4 min", revenue: Math.round(8400 * m),
+        ticketsSold: AI_SALES.ticketsSold,
+        assists: AI_SALES.assists,
+        directSales: AI_SALES.directSales,
+        totalConversations: AI_SALES.totalConversations,
+        responseTime: AI_SALES.responseTime,
+        revenue: AI_SALES.revenue,
       },
     },
     produce: {
-      offers: [
-        { name: "Done For You ($50K)", icon: "⚡", color: "#FF4EDB", active: 2, capacity: 5, completed: Math.round(1 * Math.max(1, m/4)), satisfaction: 98, referrals: Math.round(3 * Math.max(1, m/4)) },
-        { name: "Workshop ($5K)", icon: "🔨", color: "#7B61FF", active: 18, capacity: null, completed: Math.round(8 * Math.max(1, m/4)), satisfaction: 94, referrals: Math.round(6 * Math.max(1, m/4)) },
-        { name: "VIP Challenge ($97)", icon: "🏆", color: "#2F80FF", active: 45, capacity: null, completed: Math.round(34 * Math.max(1, m/4)), satisfaction: 91, referrals: Math.round(4 * Math.max(1, m/4)) },
-        { name: "Book Buyers", icon: "📖", color: "#7B61FF", active: Math.round(210 * m), capacity: null, completed: Math.round(210 * m), satisfaction: null, referrals: Math.round(2 * Math.max(1, m/4)) },
-      ],
-      totalReferrals: Math.round(15 * m),
+      offers: PRODUCE_OFFERS.map(o => ({
+        name: o.name,
+        icon: o.icon,
+        color: o.color,
+        active: o.active,
+        capacity: o.capacity,
+        completed: o.completed,
+        satisfaction: o.satisfaction,
+        referrals: o.referrals,
+      })),
+      totalReferrals: CEO_KPI.referrals.current,
     },
   };
 };
@@ -309,8 +310,8 @@ export default function CEODashboard() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
             <div>
               <div style={{ fontSize: 10, letterSpacing: 4, fontFamily: "'Orbitron', monospace",
-                background: "linear-gradient(90deg, #2F80FF, #7B61FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                AI MONETIZATION WORKSHOPS™
+                background: "linear-gradient(90deg, #C9A84C, #E6C46A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                {BRAND.eyebrow} · {BRAND.subtitle}
               </div>
               <h1 style={{ fontSize: 22, fontWeight: 700, margin: "4px 0 0", color: "#F5F7FA", fontFamily: "'Space Grotesk', sans-serif" }}>CEO Dashboard</h1>
             </div>
@@ -558,7 +559,7 @@ export default function CEODashboard() {
         {/* ========= 24HR SCHEDULE ========= */}
         {view === "schedule" && (
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 3, marginBottom: 16, fontFamily: "'Orbitron', monospace", color: "#2F80FF" }}>24/7 AI WORKFORCE SCHEDULE</div>
+            <div style={{ fontSize: 10, letterSpacing: 3, marginBottom: 16, fontFamily: "'Orbitron', monospace", color: "#C9A84C" }}>24/7 TWELVE TRIBES SCHEDULE — THE NEHEMIAH PROTOCOL</div>
             <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10, padding: "24px", boxShadow: "0 1px 4px rgba(0,0,0,0.2)" }}>
               <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 20, padding: "10px 14px", background: "rgba(255,255,255,0.03)", borderRadius: 6 }}>
                 {Object.entries(deptColors).map(([name, color]) => (
@@ -567,48 +568,7 @@ export default function CEODashboard() {
                   </span>
                 ))}
               </div>
-              {[
-                { shift: "MORNING", time: "6 AM – 12 PM", color: "#2F80FF", tasks: [
-                  { time: "6:00", task: "Analyze overnight results — all channels", dept: "All" },
-                  { time: "7:00", task: "Morning cold email batch", dept: "Prospect" },
-                  { time: "7:30", task: "AI Sales processes overnight leads", dept: "Sales" },
-                  { time: "8:00", task: "Publish daily social content", dept: "Publish" },
-                  { time: "9:00", task: "Dream 100 outreach", dept: "Partner" },
-                  { time: "10:00", task: "Ad performance — kill/scale", dept: "Paid" },
-                  { time: "10:30", task: "Qualify & book appointments", dept: "Sales" },
-                  { time: "11:00", task: "Affiliate recruitment batch", dept: "Partner" },
-                ]},
-                { shift: "AFTERNOON", time: "12 PM – 6 PM", color: "#7B61FF", tasks: [
-                  { time: "12:00", task: "Second cold email batch", dept: "Prospect" },
-                  { time: "12:30", task: "AI Sales follow-up", dept: "Sales" },
-                  { time: "1:00", task: "Book launch — partner coordination", dept: "Partner" },
-                  { time: "2:00", task: "Challenge enrollment push", dept: "Publish" },
-                  { time: "3:00", task: "Nurture unconverted leads", dept: "Sales" },
-                  { time: "4:00", task: "Batch create tomorrow's content", dept: "Publish" },
-                  { time: "5:00", task: "Affiliate performance updates", dept: "Partner" },
-                  { time: "5:30", task: "Ad budget reallocation", dept: "Paid" },
-                ]},
-                { shift: "NIGHT", time: "6 PM – 12 AM", color: "#FF4EDB", tasks: [
-                  { time: "6:00", task: "Evening cold email batch", dept: "Prospect" },
-                  { time: "6:30", task: "AI Sales final push — hot leads", dept: "Sales" },
-                  { time: "7:00", task: "Dream 100 social engagement", dept: "Partner" },
-                  { time: "8:00", task: "Webinar replay promotion", dept: "Sales" },
-                  { time: "9:00", task: "Research new Dream 100 targets", dept: "Partner" },
-                  { time: "10:00", task: "Queue next day's content", dept: "Publish" },
-                  { time: "10:30", task: "Launch overnight ad tests", dept: "Paid" },
-                  { time: "11:00", task: "Daily report — leads, revenue, actions", dept: "All" },
-                ]},
-                { shift: "OVERNIGHT", time: "12 AM – 6 AM", color: "#8A8F98", tasks: [
-                  { time: "12:00", task: "International cold email batch", dept: "Prospect" },
-                  { time: "12:30", task: "AI Sales nurtures international leads", dept: "Sales" },
-                  { time: "1:00", task: "Deep research — competitors & targets", dept: "Partner" },
-                  { time: "2:00", task: "List building & verification", dept: "Prospect" },
-                  { time: "3:00", task: "Content repurposing", dept: "Publish" },
-                  { time: "4:00", task: "A/B test analysis", dept: "All" },
-                  { time: "4:30", task: "Overnight ad monitoring", dept: "Paid" },
-                  { time: "5:00", task: "Morning briefing for Joseph", dept: "All" },
-                ]},
-              ].map((shift, si) => (
+              {SCHEDULE.map((shift, si) => (
                 <div key={si} style={{ marginBottom: si < 3 ? 22 : 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, paddingBottom: 8, borderBottom: `2px solid ${shift.color}22` }}>
                     <span style={{ fontSize: 14, fontWeight: 700, color: shift.color, fontFamily: "'Space Grotesk', sans-serif" }}>{shift.shift}</span>
@@ -632,7 +592,7 @@ export default function CEODashboard() {
         <div style={{ marginTop: 32, textAlign: "center" }}>
           <div style={{ height: 2, background: "linear-gradient(90deg, transparent, #2F80FF44, #7B61FF44, #FF4EDB44, transparent)", marginBottom: 16 }} />
           <span style={{ fontSize: 16, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif", color: "#F5F7FA" }}>
-            STOP LEARNING. <span style={{ color: "#FF4EDB" }}>START BUILDING.</span>
+            {BRAND.footer} <span style={{ color: "#C9A84C" }}>{BRAND.footerAccent}</span>
           </span>
         </div>
       </div>

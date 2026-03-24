@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Monetization Workshops™ - Demo Mission Control",
-  description: "Demo Mission Control Dashboard",
+  title: "Exodus Strong — Mission Control",
+  description: "The Nehemiah Protocol · Rob René · 1 Kings 7:7",
 };
 
 export default function RootLayout({

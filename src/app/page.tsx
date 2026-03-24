@@ -11,6 +11,7 @@ import Financials from "@/components/Financials";
 import PhaseProgress from "@/components/PhaseProgress";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useSSE } from "@/lib/useSSE";
+import { BRAND, CURRENT_PHASE } from "@/config/exodus-data";
 
 // ---------------------------------------------------------------------------
 // Navigation
@@ -44,9 +45,9 @@ export default function Home() {
   const [activeView, setActiveView] = useState("ceo-dashboard");
   const [demo, setDemo] = useState<DemoState>({
     id: null,
-    businessName: null,
-    volunteerName: null,
-    phase: "startup",
+    businessName: BRAND.eyebrow,
+    volunteerName: BRAND.agent,
+    phase: CURRENT_PHASE,
     startTime: null,
   });
   const [dbWarning, setDbWarning] = useState(false);
@@ -133,12 +134,12 @@ export default function Home() {
               fontSize: 9,
               letterSpacing: 3,
               fontFamily: "'Orbitron', monospace",
-              background: "linear-gradient(90deg, #2F80FF, #7B61FF, #FF4EDB)",
+              background: "linear-gradient(90deg, #C9A84C, #E6C46A, #C9A84C)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               marginBottom: 4,
             }}>
-              AI MONETIZATION
+              {BRAND.eyebrow}
             </div>
             <div style={{
               fontSize: 16,
@@ -146,7 +147,7 @@ export default function Home() {
               fontFamily: "'Space Grotesk', sans-serif",
               color: "#F5F7FA",
             }}>
-              Mission Control
+              {BRAND.title}
             </div>
             <div style={{
               fontSize: 10,
@@ -154,7 +155,7 @@ export default function Home() {
               marginTop: 4,
               fontFamily: "'Orbitron', monospace",
             }}>
-              {demo.id ? "LIVE" : "DEMO MODE"}
+              {BRAND.subtitle}
             </div>
           </div>
 

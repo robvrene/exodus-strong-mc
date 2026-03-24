@@ -1,154 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { TWELVE_TRIBES, ACTIVITY_FEED } from "@/config/exodus-data";
 
-// Agent data with demo values
-const agents = [
-  {
-    id: "arty",
-    name: "Arty",
-    avatar: "🎯",
-    role: "AI Sales Rep",
-    department: "Sales",
-    departmentColor: "#FF4EDB",
-    status: "active",
-    currentTask: "Following up with 12 hot leads from yesterday's webinar",
-    progress: 67,
-    tasksToday: 47,
-    successRate: 94,
-    avgResponseTime: "1.2m",
-    lastAction: "Sent follow-up to John Smith",
-    lastActionTime: 2,
-  },
-  {
-    id: "scout",
-    name: "Scout",
-    avatar: "🔍",
-    role: "Lead Researcher",
-    department: "Prospecting",
-    departmentColor: "#2F80FF",
-    status: "active",
-    currentTask: "Scanning Dream 100 targets for buying signals",
-    progress: 43,
-    tasksToday: 156,
-    successRate: 89,
-    avgResponseTime: "0.8m",
-    lastAction: "Found 3 new Dream 100 prospects",
-    lastActionTime: 5,
-  },
-  {
-    id: "publisher",
-    name: "Publisher",
-    avatar: "📱",
-    role: "Content Creator",
-    department: "Marketing",
-    departmentColor: "#7B61FF",
-    status: "active",
-    currentTask: "Scheduling 4 posts for LinkedIn and Twitter",
-    progress: 85,
-    tasksToday: 24,
-    successRate: 97,
-    avgResponseTime: "2.1m",
-    lastAction: "Scheduled 4 posts for tomorrow",
-    lastActionTime: 8,
-  },
-  {
-    id: "closer",
-    name: "Closer",
-    avatar: "💰",
-    role: "Deal Specialist",
-    department: "Sales",
-    departmentColor: "#FF4EDB",
-    status: "working",
-    currentTask: "Nurturing 8 qualified prospects in pipeline",
-    progress: 52,
-    tasksToday: 31,
-    successRate: 91,
-    avgResponseTime: "1.5m",
-    lastAction: "Sent proposal to Sarah Johnson",
-    lastActionTime: 12,
-  },
-  {
-    id: "scheduler",
-    name: "Scheduler",
-    avatar: "📅",
-    role: "Calendar Manager",
-    department: "Operations",
-    departmentColor: "#10B981",
-    status: "active",
-    currentTask: "Optimizing call booking slots for next week",
-    progress: 78,
-    tasksToday: 89,
-    successRate: 99,
-    avgResponseTime: "0.3m",
-    lastAction: "Booked discovery call with Mike Chen",
-    lastActionTime: 3,
-  },
-  {
-    id: "researcher",
-    name: "Researcher",
-    avatar: "📊",
-    role: "Market Analyst",
-    department: "Strategy",
-    departmentColor: "#F59E0B",
-    status: "working",
-    currentTask: "Analyzing competitor pricing strategies",
-    progress: 34,
-    tasksToday: 12,
-    successRate: 96,
-    avgResponseTime: "4.2m",
-    lastAction: "Generated competitor report",
-    lastActionTime: 18,
-  },
-  {
-    id: "support",
-    name: "Support",
-    avatar: "💬",
-    role: "Customer Success",
-    department: "Support",
-    departmentColor: "#06B6D4",
-    status: "active",
-    currentTask: "Responding to 6 pending customer tickets",
-    progress: 71,
-    tasksToday: 58,
-    successRate: 98,
-    avgResponseTime: "0.9m",
-    lastAction: "Resolved ticket for Emily Davis",
-    lastActionTime: 1,
-  },
-  {
-    id: "analyst",
-    name: "Analyst",
-    avatar: "📈",
-    role: "Finance Tracker",
-    department: "Finance",
-    departmentColor: "#8B5CF6",
-    status: "idle",
-    currentTask: "Waiting for end-of-day data sync",
-    progress: 100,
-    tasksToday: 8,
-    successRate: 100,
-    avgResponseTime: "5.0m",
-    lastAction: "Generated daily revenue report",
-    lastActionTime: 45,
-  },
-];
+// ── Exodus Strong: The Twelve Tribes replaces demo agents ──
+const agents = TWELVE_TRIBES.map(t => ({
+  ...t,
+  avgResponseTime: t.avgResponseTime,
+  lastActionTime: t.lastActionTime,
+}));
 
-// Activity feed items
-const generateActivityFeed = () => [
-  { agent: "Support", action: "Resolved ticket for Emily Davis", time: 1, icon: "💬" },
-  { agent: "Arty", action: "Sent follow-up to John Smith", time: 2, icon: "🎯" },
-  { agent: "Scheduler", action: "Booked discovery call with Mike Chen", time: 3, icon: "📅" },
-  { agent: "Scout", action: "Found 3 new Dream 100 prospects", time: 5, icon: "🔍" },
-  { agent: "Publisher", action: "Scheduled 4 posts for tomorrow", time: 8, icon: "📱" },
-  { agent: "Closer", action: "Sent proposal to Sarah Johnson", time: 12, icon: "💰" },
-  { agent: "Researcher", action: "Generated competitor report", time: 18, icon: "📊" },
-  { agent: "Arty", action: "Qualified lead: Tech Startup Inc", time: 22, icon: "🎯" },
-  { agent: "Scout", action: "Added 5 contacts to Dream 100 list", time: 28, icon: "🔍" },
-  { agent: "Support", action: "Answered FAQ for new customer", time: 35, icon: "💬" },
-  { agent: "Analyst", action: "Generated daily revenue report", time: 45, icon: "📈" },
-  { agent: "Publisher", action: "Created 3 social media graphics", time: 52, icon: "📱" },
-];
+const generateActivityFeed = () => ACTIVITY_FEED;
 
 export default function AIWorkforce() {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -199,12 +61,12 @@ export default function AIWorkforce() {
           fontSize: 10,
           letterSpacing: 3,
           fontFamily: "'Orbitron', monospace",
-          background: "linear-gradient(90deg, #2F80FF, #7B61FF, #FF4EDB)",
+          background: "linear-gradient(90deg, #C9A84C, #E6C46A, #C9A84C)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           marginBottom: 8,
         }}>
-          AI WORKFORCE
+          THE TWELVE TRIBES
         </div>
         <div style={{
           fontSize: 28,
@@ -213,14 +75,14 @@ export default function AIWorkforce() {
           color: "#F5F7FA",
           marginBottom: 4,
         }}>
-          Your 24/7 AI Team
+          Your 24/7 Agent Army
         </div>
         <div style={{
           fontSize: 14,
           color: "#6B7186",
           fontFamily: "'Inter', sans-serif",
         }}>
-          Currently Active — Working while you sleep
+          The Nehemiah Protocol — 16 Tribes deploying over 12 weeks
         </div>
       </div>
 
