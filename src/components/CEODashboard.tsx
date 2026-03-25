@@ -3,6 +3,31 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { ALERTS, CEO_KPI, PROMOTE_CHANNELS, PROFIT_FUNNELS, AI_SALES, PRODUCE_OFFERS, SCHEDULE, BRAND } from "@/config/exodus-data";
 
+// Fetch live gate status from Notion (via /api/gates)
+function useLiveGateAlerts() {
+  const [gateAlerts, setGateAlerts] = useState<Array<{ type: string; message: string; area: string }> | null>(null);
+  useEffect(() => {
+    fetch("/api/gates")
+      .then((r) => r.json())
+      .then((gates: Array<{ name: string; status: string; number: number }>) => {
+        if (!Array.isArray(gates) || gates.length === 0) return;
+        const alerts = gates.map((g) => {
+          const s = g.status?.toLowerCase() || "";
+          const cleared = s.includes("cleared");
+          const searching = s.includes("search") || s.includes("progress") || s.includes("pending");
+          return {
+            type: cleared ? "green" : searching ? "yellow" : "red",
+            message: `Gate ${["I","II","III"][g.number - 1] || g.number}: ${g.name} — ${g.status}`,
+            area: "Gates",
+          };
+        });
+        setGateAlerts(alerts);
+      })
+      .catch(() => {});
+  }, []);
+  return gateAlerts;
+}
+
 const deptColors: Record<string, string> = { Prospect: "#2F80FF", Paid: "#7B61FF", Publish: "#2F80FF", Partner: "#7B61FF", Sales: "#FF4EDB", All: "#8A8F98" };
 
 const daysBetween = (a: Date, b: Date) => Math.max(1, Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24)));
@@ -299,6 +324,11 @@ export default function CEODashboard() {
   const [endDate, setEndDate] = useState(toISO(today));
   const [showEngine, setShowEngine] = useState(false);
   const d = useMemo(() => generateData(fromISO(startDate), fromISO(endDate)), [startDate, endDate]);
+  const liveGateAlerts = useLiveGateAlerts();
+  // Merge: live gate alerts replace static gate-related alerts; keep non-gate static alerts
+  const activeAlerts = liveGateAlerts
+    ? [...liveGateAlerts, ...d.alerts.filter((a) => a.area !== "Gates")]
+    : d.alerts;
 
   return (
     <div style={{ minHeight: "100vh", background: "#0B0F19", fontFamily: "'Inter', system-ui, sans-serif", color: "#F5F7FA" }}>
@@ -340,9 +370,9 @@ export default function CEODashboard() {
         {/* ========= DASHBOARD ========= */}
         {view === "dashboard" && (
           <div>
-            {d.alerts.length > 0 && (
+            {activeAlerts.length > 0 && (
               <div style={{ marginBottom: 20 }}>
-                {d.alerts.map((a, i) => (
+                {activeAlerts.map((a, i) => (
                   <div key={i} style={{
                     display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", marginBottom: 6, borderRadius: 8,
                     background: a.type === "red" ? "rgba(239,68,68,0.08)" : a.type === "yellow" ? "rgba(245,158,11,0.08)" : "rgba(16,185,129,0.08)",
