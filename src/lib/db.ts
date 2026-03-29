@@ -86,6 +86,12 @@ const MIGRATIONS: string[] = [
     locked_at DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`,
+
+  `CREATE TABLE IF NOT EXISTS journal (
+    date TEXT PRIMARY KEY,
+    content TEXT NOT NULL DEFAULT '',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`,
 ];
 
 async function runMigrations(): Promise<void> {
