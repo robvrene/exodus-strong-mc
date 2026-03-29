@@ -9,6 +9,7 @@ import MediaHub from "@/components/MediaHub";
 import Projects from "@/components/Projects";
 import Financials from "@/components/Financials";
 import PhaseProgress from "@/components/PhaseProgress";
+import DailyJournal from "@/components/DailyJournal";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useSSE } from "@/lib/useSSE";
 import { BRAND, CURRENT_PHASE } from "@/config/exodus-data";
@@ -19,7 +20,9 @@ import { BRAND, CURRENT_PHASE } from "@/config/exodus-data";
 
 const SEPARATOR = "---";
 
-const navItems = [
+type NavItem = { id: string; label: string; icon: string; color: string } | typeof SEPARATOR;
+
+const navItems: NavItem[] = [
   { id: "ceo-dashboard", label: "CEO Dashboard", icon: "📊", color: "#FF4EDB" },
   { id: "revenue-engine", label: "Revenue Engine", icon: "💰", color: "#10B981" },
   { id: "ai-workforce", label: "AI Workforce", icon: "🤖", color: "#2F80FF" },
@@ -27,6 +30,8 @@ const navItems = [
   { id: "media-hub", label: "Media Hub", icon: "🎬", color: "#FF4EDB" },
   { id: "projects", label: "Projects", icon: "📋", color: "#7B61FF" },
   { id: "financials", label: "Financials", icon: "💵", color: "#10B981" },
+  SEPARATOR,
+  { id: "daily-journal", label: "Daily Journal", icon: "📅", color: "#C9A84C" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -162,7 +167,7 @@ export default function Home() {
           {/* Navigation Buttons */}
           <nav style={{ flex: 1, padding: "16px 12px", display: "flex", flexDirection: "column", gap: 4, overflowY: "auto" }}>
             {navItems.map((item, idx) => {
-              if (item.id === SEPARATOR) {
+              if (item === SEPARATOR) {
                 return (
                   <div key={`sep-${idx}`} style={{
                     height: 1,
@@ -261,6 +266,9 @@ export default function Home() {
           )}
           {activeView === "financials" && (
             <ErrorBoundary fallbackLabel="Financials"><Financials /></ErrorBoundary>
+          )}
+          {activeView === "daily-journal" && (
+            <ErrorBoundary fallbackLabel="Daily Journal"><DailyJournal /></ErrorBoundary>
           )}
         </div>
       </div>
