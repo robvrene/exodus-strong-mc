@@ -20,6 +20,28 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Video editing via Claude Code (Palmier Pro)
+
+This repo ships a project-scoped MCP config (`.mcp.json`) that connects Claude Code
+to [Palmier Pro](https://www.palmier.io/) — a macOS video editor with a built-in
+MCP server. With Palmier Pro open, Claude Code can read your timeline, add/trim/
+reorder clips, and generate footage by prompt.
+
+1. Install and open **Palmier Pro** (macOS 26 / Apple Silicon). It exposes an MCP
+   server at `http://127.0.0.1:19789/mcp`.
+2. Run Claude Code from this repo on your Mac. It auto-detects `.mcp.json`; approve
+   the `palmier-pro` server when prompted (use `/mcp` to check status).
+3. Ask Claude Code to edit your video — e.g. "trim the first clip to 3s and add a title."
+
+The MCP server only responds while the Palmier Pro app is running on the same machine
+as Claude Code, so this works in a local Claude Code session (not a remote/web one).
+
+To register the server manually instead of using `.mcp.json`:
+
+```bash
+claude mcp add --transport http palmier-pro http://127.0.0.1:19789/mcp
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
