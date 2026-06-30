@@ -44,3 +44,6 @@ next-env.d.ts
 /data/
 *.db
 .env*.local
+
+# Shopify redesign harvest output (regenerate via harvest.sh)
+shopify-redesign/data/
